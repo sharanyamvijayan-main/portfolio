@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sv-indigo: #2708A0;
+  --color-sv-cream: #FCEBDA;
+  --color-sv-pink: #DD0369;
+  --color-sv-green: #09814A;
+  --color-sv-dark: #191919;
+
+  --font-display: var(--font-syne);
+  --font-body: var(--font-inter);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* The OS cursor is only hidden once CustomCursor has mounted and added this
+   class — if that script never runs, the native cursor stays. */
+html.has-custom-cursor,
+html.has-custom-cursor *,
+html.has-custom-cursor *::before,
+html.has-custom-cursor *::after {
+  cursor: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #FFFFFF;
+  color: #191919;
+  font-family: var(--font-inter), 'Inter', sans-serif;
+}
+
+/* ── Custom cursor ─────────────────────────────── */
+/* One small dot, positioned straight from the mousemove event (no easing /
+   no second trailing ring) so it tracks the pointer 1:1. Only size and
+   colour transition; never transform. */
+#cursor-dot {
+  width: 14px;
+  height: 14px;
+  background: #191919;
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Parked off-screen until the first mousemove positions it. */
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
+}
+
+/* Gentle grow over interactive elements. */
+#cursor-dot.is-hovering {
+  width: 20px;
+  height: 20px;
+}
+
+/* Label shown only for the "hello!" state. */
+.cursor-dot__label {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  white-space: nowrap;
+  text-transform: lowercase;
+  opacity: 0;
+  transition: opacity 0.14s ease;
+}
+
+/* Over the About photo — a horizontal pink "hello!" pill. */
+#cursor-dot.is-hello {
+  width: auto;
+  height: 30px;
+  padding: 0 15px;
+  border-radius: 999px;
+  background: #dd0369;
+}
+
+#cursor-dot.is-hello .cursor-dot__label {
+  opacity: 1;
+}
+
+/* Colour follows the section it's over. */
+#cursor-dot.is-dark {
+  background: #FCEBDA;
+}
+
+/* AbbVie case study — AbbVie blue the whole time. */
+#cursor-dot.is-abbvie {
+  background: #0066F5;
+}
+
+/* Remember case study — the Remember logo's moss green the whole time. */
+#cursor-dot.is-remember {
+  background: #5F7746;
+}
+
+/* ── Scroll cue ────────────────────────────────── */
+@keyframes scrollCue {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50% { transform: translateY(7px); opacity: 1; }
+}
+
+.scroll-cue {
+  animation: scrollCue 1.7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue { animation: none; }
+}
+
+/* ── Homepage hero — slow-drifting colour fields ── */
+.hero-blob {
+  will-change: transform;
+}
+
+.hero-blob-1 {
+  animation: heroDriftA 24s ease-in-out infinite;
+}
+
+.hero-blob-2 {
+  animation: heroDriftB 29s ease-in-out infinite;
+}
+
+.hero-blob-3 {
+  animation: heroDriftC 34s ease-in-out infinite;
+}
+
+@keyframes heroDriftA {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(-140px, 110px) scale(1.18); }
+  66% { transform: translate(80px, -80px) scale(0.85); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes heroDriftB {
+  0% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(150px, 80px) scale(1.25); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes heroDriftC {
+  0% { transform: translate(0px, 0px) scale(0.95); }
+  40% { transform: translate(-110px, -90px) scale(1.15); }
+  75% { transform: translate(90px, 60px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(0.95); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob-1,
+  .hero-blob-2,
+  .hero-blob-3 {
+    animation: none;
+  }
+}
+
+/* ── Hero animations ───────────────────────────── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.7s ease forwards;
+  opacity: 0;
+}
+
+/* ── Intro reveal-on-scroll ────────────────────── */
+.sv-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sv-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sv-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── Scroll reveal (used in case studies) ───────── */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.visible {
+  animation: revealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
