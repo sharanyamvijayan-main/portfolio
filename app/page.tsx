@@ -180,7 +180,7 @@ export default function Home() {
             <Link
               key={p.slug}
               href={`/work/${p.slug}`}
-              className="group relative overflow-hidden rounded-2xl flex flex-col justify-end p-8 md:p-10 transition-transform duration-300 hover:-translate-y-1"
+              className="group relative overflow-hidden rounded-2xl flex flex-col justify-end p-8 md:p-10 transition-transform duration-300 [@media(hover:hover)]:hover:-translate-y-1"
               style={{
                 backgroundColor: artwork ? artwork.bg : p.bg,
                 backgroundImage: artwork ? `url(${artwork.src})` : undefined,
@@ -249,9 +249,9 @@ export default function Home() {
                 {p.tagline}
               </p>
 
-              {/* Hover arrow */}
+              {/* Visible on touch; desktop still reveals on hover */}
               <span
-                className="absolute bottom-9 right-9 font-body text-sm opacity-0 group-hover:opacity-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300"
+                className="absolute bottom-9 right-9 font-body text-sm opacity-100 translate-x-0 md:opacity-0 md:translate-x-3 md:group-hover:opacity-100 md:group-hover:translate-x-0 transition-all duration-300"
                 style={{ color: ink }}
               >
                 View →

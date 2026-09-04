@@ -1,5 +1,4 @@
-"use client";
-
+import type { CSSProperties } from "react";
 import { Newsreader } from "next/font/google";
 import Reveal from "@/components/Reveal";
 
@@ -48,7 +47,7 @@ export default function Contact() {
       <div className="max-w-[900px] mx-auto">
         <Reveal>
           <h1
-            className="text-sv-dark whitespace-nowrap"
+            className="text-sv-dark md:whitespace-nowrap"
             style={{
               fontFamily: "var(--font-newsreader-hero)",
               fontWeight: 400,
@@ -76,41 +75,28 @@ export default function Contact() {
               href={c.href}
               target={c.href.startsWith("mailto") ? undefined : "_blank"}
               rel={c.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-              className="group flex items-center justify-between p-7 rounded-2xl border border-sv-dark/10 transition-all duration-300"
-              onMouseEnter={(e) => {
-                const el = e.currentTarget;
-                el.style.backgroundColor = c.hoverBg;
-                el.style.borderColor = c.hoverBg;
-                el.querySelectorAll("[data-text]").forEach((t) => {
-                  (t as HTMLElement).style.color = c.hoverText;
-                });
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget;
-                el.style.backgroundColor = "";
-                el.style.borderColor = "";
-                el.querySelectorAll("[data-text]").forEach((t) => {
-                  (t as HTMLElement).style.color = "";
-                });
-              }}
+              className="group flex items-center justify-between p-7 rounded-2xl border border-sv-dark/10 transition-all duration-300 [@media(hover:hover)]:hover:bg-[var(--hover-bg)] [@media(hover:hover)]:hover:border-[var(--hover-bg)] active:bg-[var(--hover-bg)] active:border-[var(--hover-bg)]"
+              style={
+                {
+                  "--hover-bg": c.hoverBg,
+                  "--hover-text": c.hoverText,
+                } as CSSProperties
+              }
             >
               <div>
                 <p
-                  data-text
-                  className="font-body text-xs text-sv-dark/40 uppercase tracking-widest mb-1.5 transition-colors duration-300"
+                  className="font-body text-xs text-sv-dark/40 uppercase tracking-widest mb-1.5 transition-colors duration-300 [@media(hover:hover)]:group-hover:text-[var(--hover-text)] group-active:text-[var(--hover-text)]"
                 >
                   {c.label}
                 </p>
                 <p
-                  data-text
-                  className="font-body font-medium text-sv-dark text-lg md:text-xl transition-colors duration-300"
+                  className="font-body font-medium text-sv-dark text-lg md:text-xl transition-colors duration-300 [@media(hover:hover)]:group-hover:text-[var(--hover-text)] group-active:text-[var(--hover-text)]"
                 >
                   {c.value}
                 </p>
               </div>
               <span
-                data-text
-                className="font-body text-2xl text-sv-dark transition-all duration-300 translate-x-0 group-hover:translate-x-1"
+                className="font-body text-2xl text-sv-dark transition-all duration-300 translate-x-0 [@media(hover:hover)]:group-hover:translate-x-1 [@media(hover:hover)]:group-hover:text-[var(--hover-text)] group-active:text-[var(--hover-text)]"
               >
                 →
               </span>

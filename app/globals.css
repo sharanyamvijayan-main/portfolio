@@ -24,6 +24,20 @@ html.has-custom-cursor *::after {
   cursor: none;
 }
 
+/* Touch phones have no mouse — keep the OS cursor and hide the custom dot. */
+@media (hover: none), (pointer: coarse) {
+  html.has-custom-cursor,
+  html.has-custom-cursor *,
+  html.has-custom-cursor *::before,
+  html.has-custom-cursor *::after {
+    cursor: auto;
+  }
+
+  #cursor-dot {
+    display: none;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }

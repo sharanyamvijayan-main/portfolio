@@ -30,7 +30,7 @@ export default function About() {
         {/* Heading */}
         <Reveal>
           <h1
-            className="text-sv-dark mb-16 whitespace-nowrap"
+            className="text-sv-dark mb-16 md:whitespace-nowrap"
             style={{
               fontFamily: "var(--font-newsreader-hero)",
               fontWeight: 400,

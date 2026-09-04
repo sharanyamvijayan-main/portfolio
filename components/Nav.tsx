@@ -35,6 +35,30 @@ export default function Nav() {
   // pixel actually behind the bar then corrects it and keeps it correct on
   // scroll, so the nav stays legible whatever it's sitting on.
   const [dark, setDark] = useState(() => isDarkHeroPath(pathname));
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onResize = () => {
+      if (window.matchMedia("(min-width: 640px)").matches) setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
 
   useEffect(() => {
     setDark(isDarkHeroPath(pathname));
@@ -90,29 +114,97 @@ export default function Nav() {
     : "bg-sv-dark text-white hover:bg-sv-indigo";
 
   return (
-    <div className="fixed top-4 md:top-6 left-4 right-4 md:left-8 md:right-8 z-50">
-      <nav className="mx-auto max-w-[1200px] flex items-center justify-between gap-4">
-        <Link
-          href="/"
-          aria-label="Sharanya Vijayan — back to home"
-          className="flex items-center shrink-0 p-2 -m-2 transition-transform duration-200 hover:scale-105 active:scale-95"
-        >
-          <Logo dark={isDark} />
-        </Link>
+    <>
+      <div className="fixed top-4 md:top-6 left-4 right-4 md:left-8 md:right-8 z-50">
+        <nav className="mx-auto max-w-[1200px] flex items-center justify-between gap-4">
+          <Link
+            href="/"
+            aria-label="Sharanya Vijayan — back to home"
+            onClick={() => setOpen(false)}
+            className="flex items-center shrink-0 p-2 -m-2 transition-transform duration-200 hover:scale-105 active:scale-95"
+          >
+            <Logo dark={isDark} />
+          </Link>
 
-        <ul className="hidden sm:flex items-center gap-6 md:gap-8">
+          <ul className="hidden sm:flex items-center gap-6 md:gap-8">
+            {links.map(({ href, label }) => {
+              const active = href === "/#work" ? pathname === "/" : pathname === href;
+              return (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className={`font-body text-sm font-medium transition-colors duration-300 relative
+                    ${textColor} ${hoverColor}
+                    after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0
+                    after:transition-all after:duration-200 hover:after:w-full ${underline}
+                    ${active ? "after:w-full opacity-100" : "opacity-70"}
+                  `}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/contact"
+              onClick={() => setOpen(false)}
+              className={`font-body text-xs md:text-sm font-semibold px-4 md:px-5 py-2 rounded-full transition-colors duration-300 whitespace-nowrap ${ctaBg}`}
+            >
+              Get in touch
+            </Link>
+
+            <button
+              type="button"
+              className={`sm:hidden relative flex h-11 w-11 items-center justify-center rounded-full ${textColor}`}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="mobile-nav"
+              onClick={() => setOpen((value) => !value)}
+            >
+              <span className="flex flex-col items-center justify-center gap-[5px]" aria-hidden>
+                <span
+                  className={`block h-[1.5px] w-5 bg-current transition-transform duration-300 ${
+                    open ? "translate-y-[3.25px] rotate-45" : ""
+                  }`}
+                />
+                <span
+                  className={`block h-[1.5px] w-5 bg-current transition-transform duration-300 ${
+                    open ? "-translate-y-[3.25px] -rotate-45" : ""
+                  }`}
+                />
+              </span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <div
+        id="mobile-nav"
+        inert={!open ? true : undefined}
+        aria-hidden={!open}
+        className={`sm:hidden fixed inset-0 z-40 flex flex-col justify-center px-8 pt-28 pb-12 transition-[opacity,visibility] duration-300 ${
+          open ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+        }`}
+        style={{
+          background: isDark
+            ? "#191919"
+            : "#FFFFFF radial-gradient(rgba(25, 25, 25, 0.11) 1.5px, transparent 1.5px) 0 0 / 26px 26px",
+        }}
+      >
+        <ul className="flex flex-col gap-1">
           {links.map(({ href, label }) => {
             const active = href === "/#work" ? pathname === "/" : pathname === href;
             return (
               <li key={href}>
                 <Link
                   href={href}
-                  className={`font-body text-sm font-medium transition-colors duration-300 relative
-                    ${textColor} ${hoverColor}
-                    after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0
-                    after:transition-all after:duration-200 hover:after:w-full ${underline}
-                    ${active ? "after:w-full opacity-100" : "opacity-70"}
-                  `}
+                  onClick={() => setOpen(false)}
+                  className={`font-body text-[32px] leading-tight font-medium py-3 block transition-colors duration-200 ${
+                    isDark ? "text-sv-cream hover:text-white" : "text-sv-dark hover:text-sv-indigo"
+                  } ${active ? "opacity-100" : "opacity-70"}`}
                 >
                   {label}
                 </Link>
@@ -120,14 +212,7 @@ export default function Nav() {
             );
           })}
         </ul>
-
-        <Link
-          href="/contact"
-          className={`font-body text-xs md:text-sm font-semibold px-4 md:px-5 py-2 rounded-full transition-colors duration-300 whitespace-nowrap ${ctaBg}`}
-        >
-          Get in touch
-        </Link>
-      </nav>
-    </div>
+      </div>
+    </>
   );
 }
