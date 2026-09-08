@@ -7,8 +7,8 @@ export default function Logo({
 }) {
   // Two-tone monogram — transparent background. Colours flip for the
   // dark-hero nav so both strokes stay legible.
-  const primary = dark ? "#5B8DEF" : "#1D4ED8";
-  const secondary = dark ? "#F87171" : "#DC2626";
+  const primary = dark ? "#8578E6" : "#29149B";
+  const secondary = dark ? "#F3EEE3" : "#191919";
 
   return (
     <span className={`inline-flex items-center justify-center ${className}`}>
