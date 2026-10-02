@@ -1,0 +1,430 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sv-indigo: #2708A0;
+  --color-sv-cream: #FCEBDA;
+  --color-sv-pink: #DD0369;
+  --color-sv-green: #09814A;
+  --color-sv-dark: #191919;
+
+  --font-display: var(--font-syne);
+  --font-body: var(--font-inter);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* The OS cursor is only hidden once CustomCursor has mounted and added this
+   class — if that script never runs, the native cursor stays. */
+html.has-custom-cursor,
+html.has-custom-cursor *,
+html.has-custom-cursor *::before,
+html.has-custom-cursor *::after {
+  cursor: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #FFFFFF;
+  color: #191919;
+  font-family: var(--font-inter), 'Inter', sans-serif;
+}
+
+/* ── Custom cursor ─────────────────────────────── */
+/* One small dot, positioned straight from the mousemove event (no easing /
+   no second trailing ring) so it tracks the pointer 1:1. Only size and
+   colour transition; never transform. */
+#cursor-dot {
+  width: 14px;
+  height: 14px;
+  background: #191919;
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Parked off-screen until the first mousemove positions it. */
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
+}
+
+/* Gentle grow over interactive elements. */
+#cursor-dot.is-hovering {
+  width: 20px;
+  height: 20px;
+}
+
+/* Label shown only for the "hello!" state. */
+.cursor-dot__label {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  white-space: nowrap;
+  text-transform: lowercase;
+  opacity: 0;
+  transition: opacity 0.14s ease;
+}
+
+/* Over the About photo — a horizontal pink "hello!" pill. */
+#cursor-dot.is-hello {
+  width: auto;
+  height: 30px;
+  padding: 0 15px;
+  border-radius: 999px;
+  background: #dd0369;
+}
+
+#cursor-dot.is-hello .cursor-dot__label {
+  opacity: 1;
+}
+
+/* Colour follows the section it's over. */
+#cursor-dot.is-dark {
+  background: #FCEBDA;
+}
+
+/* AbbVie case study — AbbVie blue the whole time. */
+#cursor-dot.is-abbvie {
+  background: #0066F5;
+}
+
+/* Remember case study — the Remember logo's moss green the whole time. */
+#cursor-dot.is-remember {
+  background: #5F7746;
+}
+
+/* ── Scroll cue ────────────────────────────────── */
+@keyframes scrollCue {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50% { transform: translateY(7px); opacity: 1; }
+}
+
+.scroll-cue {
+  animation: scrollCue 1.7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue { animation: none; }
+}
+
+/* ── Homepage hero — slow-drifting colour fields ── */
+.hero-blob {
+  will-change: transform;
+}
+
+.hero-blob-1 {
+  animation: heroDriftA 24s ease-in-out infinite;
+}
+
+.hero-blob-2 {
+  animation: heroDriftB 29s ease-in-out infinite;
+}
+
+.hero-blob-3 {
+  animation: heroDriftC 34s ease-in-out infinite;
+}
+
+@keyframes heroDriftA {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(-140px, 110px) scale(1.18); }
+  66% { transform: translate(80px, -80px) scale(0.85); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes heroDriftB {
+  0% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(150px, 80px) scale(1.25); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes heroDriftC {
+  0% { transform: translate(0px, 0px) scale(0.95); }
+  40% { transform: translate(-110px, -90px) scale(1.15); }
+  75% { transform: translate(90px, 60px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(0.95); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob-1,
+  .hero-blob-2,
+  .hero-blob-3 {
+    animation: none;
+  }
+}
+
+/* ── Hero animations ───────────────────────────── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.7s ease forwards;
+  opacity: 0;
+}
+
+/* ── Intro reveal-on-scroll ────────────────────── */
+.sv-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sv-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sv-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── Scroll reveal (used in case studies) ───────── */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.visible {
+  animation: revealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Splash ────────────────────────────────────────
+   Plays once per browser session. layout.tsx adds html.splash-active before
+   first paint; Splash.tsx adds .splash-leaving as it lifts (so the hero's own
+   entrance can start) and removes both when done. Timeline, in seconds:
+   0–0.4 discs fan out · 0.38–0.7 top disc floods the screen · 0.53 "S" lands
+   0.73–0.98 pink wipe, "V" slides in · 0.98–1.23 cream wipe, the oversized
+   name types out while the background flickers through the palette ·
+   1.4 the big full stop drops · 1.95–2.35 whole splash lifts away. */
+#sv-splash {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  overflow: hidden;
+  background: #FFFBF6;
+  --d: clamp(150px, 24vmin, 240px);
+  --top: 36px; /* top disc sits this far above centre so the fanned stack is centred */
+  /* Not interactive: Nav and the custom cursor sample the pixel under them with
+     elementFromPoint, which must see the real page and not this overlay.
+     Click-to-skip is handled on the document instead (Splash.tsx). */
+  pointer-events: none;
+  animation: svSplashOut 0.4s cubic-bezier(0.76, 0, 0.24, 1) 1.95s forwards;
+}
+
+html.splash-active #sv-splash { display: block; }
+html.splash-skip #sv-splash { animation: svSplashSkip 0.4s cubic-bezier(0.76, 0, 0.24, 1) forwards; }
+
+/* Hold the page's own entrance animations until the splash is lifting. */
+html.splash-active:not(.splash-leaving) .animate-slide-up,
+html.splash-active:not(.splash-leaving) .animate-fade-in {
+  animation-play-state: paused;
+}
+
+.sv-splash__discs {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--d);
+  height: var(--d);
+  transform: translate(-50%, calc(-50% - var(--top)));
+  animation: svSplashDiscsHide 0.01s linear 0.38s forwards;
+}
+
+.sv-splash__disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0;
+  animation: svSplashFan 0.4s cubic-bezier(0.16, 1, 0.3, 1) calc(0.04s + var(--i) * 0.035s) forwards;
+}
+
+.sv-splash__layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Starts exactly as the top disc (same size, same spot) then grows to cover. */
+.sv-splash__iris {
+  background: #2708A0;
+  clip-path: circle(0 at 50% calc(50% - var(--top)));
+  animation: svSplashIris 0.32s cubic-bezier(0.76, 0, 0.24, 1) 0.38s forwards;
+}
+
+.sv-splash__wipe { clip-path: inset(100% 0 0 0); }
+.sv-splash__pink { background: #DD0369; animation: svSplashWipe 0.25s cubic-bezier(0.76, 0, 0.24, 1) 0.73s forwards; }
+/* Wipes up, and from the moment it starts the background and ink flicker through the palette. */
+.sv-splash__cream {
+  background: #FCEBDA;
+  color: #191919;
+  animation:
+    svSplashWipe 0.25s cubic-bezier(0.76, 0, 0.24, 1) 0.98s forwards,
+    svSplashFlicker 0.84s step-end 1.02s forwards;
+}
+
+.sv-splash__glyph { height: 62vmin; width: auto; opacity: 0; }
+.sv-splash__glyph--s { animation: svSplashGlyphS 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.53s forwards; }
+.sv-splash__glyph--v { animation: svSplashGlyphV 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.83s forwards; }
+
+/* The name is deliberately too big for the screen: two lines that bleed off both
+   edges, with a slow push-in on top. */
+.sv-splash__lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-newsreader-splash), Georgia, serif;
+  font-weight: 400;
+  font-size: min(28.5vw, 50vh);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  animation: svSplashPush 1.3s cubic-bezier(0.16, 1, 0.3, 1) 1.02s forwards;
+}
+
+.sv-splash__line { display: flex; align-items: baseline; }
+
+.sv-splash__char-mask { display: inline-block; overflow: hidden; padding: 0.14em 0; margin: -0.14em 0; }
+.sv-splash__char {
+  display: inline-block;
+  transform: translateY(115%);
+  animation: svSplashChar 0.3s cubic-bezier(0.16, 1, 0.3, 1) calc(1.08s + var(--c) * 0.015s) forwards;
+}
+
+/* The pink full stop: drops in from above and squashes on landing. */
+.sv-splash__dot {
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.03em;
+  border-radius: 50%;
+  background: #DD0369;
+  opacity: 0;
+  transform-origin: 50% 100%;
+  animation: svSplashDot 0.4s cubic-bezier(0.34, 1.4, 0.64, 1) 1.4s forwards;
+}
+
+@keyframes svSplashFan {
+  from { opacity: 1; transform: translateY(0) scale(0.55); }
+  to   { opacity: 1; transform: translateY(var(--y)) scale(1); }
+}
+@keyframes svSplashDiscsHide { to { opacity: 0; visibility: hidden; } }
+@keyframes svSplashIris {
+  from { clip-path: circle(calc(var(--d) / 2) at 50% calc(50% - var(--top))); }
+  to   { clip-path: circle(150vmax at 50% 50%); }
+}
+@keyframes svSplashWipe { to { clip-path: inset(0 0 0 0); } }
+/* Hard-stepped colour flicker; ends on the cream the page lifts away from. */
+@keyframes svSplashFlicker {
+  0%      { background: #2708A0; color: #FCEBDA; }
+  8.33%   { background: #FFD9B8; color: #191919; }
+  16.66%  { background: #09814A; color: #FCEBDA; }
+  25%     { background: #B9AEF5; color: #191919; }
+  33.33%  { background: #191919; color: #FCEBDA; }
+  41.66%  { background: #FCEBDA; color: #29149B; }
+  50%     { background: #09814A; color: #FFD9B8; }
+  58.33%  { background: #2708A0; color: #B9AEF5; }
+  66.66%  { background: #FFD9B8; color: #191919; }
+  75%     { background: #B9AEF5; color: #2708A0; }
+  83.33%  { background: #191919; color: #FFD9B8; }
+  91.66%, 100% { background: #FCEBDA; color: #191919; }
+}
+@keyframes svSplashGlyphS {
+  from { opacity: 0; transform: translateY(14%) scale(0.88); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes svSplashGlyphV {
+  from { opacity: 0; transform: translateX(24%) rotate(-9deg); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes svSplashPush { to { transform: scale(1.08); } }
+@keyframes svSplashChar { to { transform: translateY(0); } }
+@keyframes svSplashDot {
+  0%   { opacity: 1; transform: translateY(-3.2em) scaleY(1); }
+  62%  { opacity: 1; transform: translateY(0) scaleY(0.7); }
+  100% { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+@keyframes svSplashOut { to { transform: translateY(-100%); } }
+@keyframes svSplashSkip { to { transform: translateY(-100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html.splash-active #sv-splash { display: none; }
+  html.splash-active:not(.splash-leaving) .animate-slide-up,
+  html.splash-active:not(.splash-leaving) .animate-fade-in { animation-play-state: running; }
+}
+
+/* ── PinReal. case study (design v2) ─────────────────
+   Font-family helpers the Figma-derived markup refers to. The CSS variables
+   are set by the next/font loaders in projects/PinReal/fonts.ts. */
+.pr-roboto { font-family: var(--font-pr-roboto), Roboto, system-ui, sans-serif; }
+.pr-newsreader { font-family: var(--font-pr-newsreader), Georgia, serif; }
+.pr-pacifico { font-family: var(--font-pr-pacifico), cursive; }
+.pr-palanquin { font-family: var(--font-pr-palanquin), system-ui, sans-serif; }
+.pr-palanquin-dark { font-family: var(--font-pr-palanquin-dark), system-ui, sans-serif; }
+.pr-inter { font-family: var(--font-inter), Inter, system-ui, sans-serif; }
+.pr-sf { font-family: -apple-system, "SF Pro Text", "SF Pro", var(--font-inter), system-ui, sans-serif; }
+/* The hero's "APP MASHUP" is set in F37 Lineca (a licensed face). Inter Medium is the closest loaded match. */
+.pr-lineca { font-family: var(--font-inter), Inter, system-ui, sans-serif; font-weight: 500; }
+
+/* ── Arco case study (design v2) ─────────────────────
+   Font-family helpers for the Figma-derived markup. The CSS variables are set
+   by the next/font loaders in projects/Arco/fonts.ts. */
+.ar-roboto { font-family: var(--font-ar-roboto), Roboto, system-ui, sans-serif; }
+.ar-newsreader { font-family: var(--font-ar-newsreader), Georgia, serif; }
+/* The hero wordmark is set in Nexa (a licensed face). Outfit is the closest loaded match. */
+.ar-nexa { font-family: var(--font-ar-nexa), Outfit, system-ui, sans-serif; }
+
+/* ── Oblique Vase case study (design v2) ─────────────
+   Font-family helpers for the Figma-derived markup. The CSS variables are set
+   by the next/font loaders in projects/ObliqueVase/fonts.ts. */
+.ov-roboto { font-family: var(--font-ov-roboto), Roboto, system-ui, sans-serif; }
+.ov-newsreader { font-family: var(--font-ov-newsreader), Georgia, serif; }
+.ov-krona { font-family: var(--font-ov-krona), system-ui, sans-serif; }
+.ov-jura { font-family: var(--font-ov-jura), system-ui, sans-serif; }

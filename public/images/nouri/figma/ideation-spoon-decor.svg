@@ -1,0 +1,15 @@
+<svg width="710" height="185" viewBox="0 0 710 185" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="185" height="245.233" rx="92.5" transform="matrix(0 1 1 0 0 0)" fill="url(#paint0_radial_93_186)" fill-opacity="0.25"/>
+<rect x="2.15116" y="2.15116" width="180.698" height="240.93" rx="90.3488" transform="matrix(0 1 1 0 0 0)" stroke="black" stroke-opacity="0.4" stroke-width="4.30233"/>
+<line y1="-2.15116" x2="137.674" y2="-2.15116" transform="matrix(-1 0 0 1 382.906 94.6514)" stroke="black" stroke-opacity="0.4" stroke-width="4.30233"/>
+<rect width="68.8372" height="326.977" rx="34.4186" transform="matrix(0 1 1 0 382.906 60.2334)" fill="#4285F4" fill-opacity="0.32"/>
+<rect x="2.15116" y="2.15116" width="64.5349" height="322.674" rx="32.2674" transform="matrix(0 1 1 0 382.906 60.2334)" stroke="black" stroke-opacity="0.4" stroke-width="4.30233"/>
+<path d="M623.836 60.2334V129.071H675.464C694.473 129.071 709.882 113.661 709.882 94.652C709.882 75.6431 694.473 60.2334 675.464 60.2334H623.836Z" fill="#4285F4"/>
+<path d="M625.987 126.92H675.464C693.285 126.92 707.731 112.473 707.731 94.6523C707.731 76.8315 693.285 62.3848 675.464 62.3848H625.987V126.92Z" stroke="black" stroke-opacity="0.4" stroke-width="4.30233"/>
+<defs>
+<radialGradient id="paint0_radial_93_186" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(92.5 122.616) rotate(90) scale(122.616 92.5)">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="#D5D5D5"/>
+</radialGradient>
+</defs>
+</svg>

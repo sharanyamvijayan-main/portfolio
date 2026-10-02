@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="53.6" height="53.6" viewBox="0 0 53.6 53.6" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Camera" clip-path="url(#clip0_0_7)">
+<g id="Icon">
+<path d="M51.3667 42.4333C51.3667 43.618 50.8961 44.7541 50.0584 45.5917C49.2207 46.4294 48.0846 46.9 46.9 46.9H6.7C5.51537 46.9 4.37925 46.4294 3.54159 45.5917C2.70393 44.7541 2.23333 43.618 2.23333 42.4333V17.8667C2.23333 16.682 2.70393 15.5459 3.54159 14.7083C4.37925 13.8706 5.51537 13.4 6.7 13.4H15.6333L20.1 6.7H33.5L37.9667 13.4H46.9C48.0846 13.4 49.2207 13.8706 50.0584 14.7083C50.8961 15.5459 51.3667 16.682 51.3667 17.8667V42.4333Z" stroke="#858585" stroke-width="4.39344" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M26.8 37.9667C31.7337 37.9667 35.7333 33.9671 35.7333 29.0333C35.7333 24.0996 31.7337 20.1 26.8 20.1C21.8663 20.1 17.8667 24.0996 17.8667 29.0333C17.8667 33.9671 21.8663 37.9667 26.8 37.9667Z" stroke="#858585" stroke-width="4.39344" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_7">
+<rect width="53.6" height="53.6" fill="white"/>
+</clipPath>
+</defs>
+</svg>
