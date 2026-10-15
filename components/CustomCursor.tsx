@@ -17,13 +17,17 @@ export default function CustomCursor() {
   useEffect(() => {
     const dot = dotRef.current;
     if (!dot) return;
+    // Mouse/trackpad devices only. On phones a tap fires a synthetic mouse
+    // move, which would leave the dot sitting wherever you last touched.
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     const root = document.documentElement;
     root.classList.add("has-custom-cursor");
 
-    // Everything is derived from mousemove — position AND hover state — so
+    // Everything is derived from pointer moves — position AND hover state — so
     // there's no reliance on mouseover/mouseout bubbling and no stuck states.
-    const onMove = (e: MouseEvent) => {
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return; // touchscreen laptops: ignore finger taps
       dot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
       const t = e.target;
       const hello = t instanceof Element && !!t.closest("[data-cursor='hello']");
@@ -32,11 +36,11 @@ export default function CustomCursor() {
       dot.classList.toggle("is-hovering", interactive && !hello);
     };
 
-    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("pointermove", onMove, { passive: true });
 
     return () => {
       root.classList.remove("has-custom-cursor");
-      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("pointermove", onMove);
     };
   }, []);
 

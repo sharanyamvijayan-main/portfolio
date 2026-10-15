@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Newsreader } from "next/font/google";
 import Logo from "./Logo";
+
+// The phone menu's links use the site's headline serif.
+const newsreader = Newsreader({ subsets: ["latin"], weight: ["400"], display: "swap" });
 import { isDarkHeroPath } from "@/lib/darkHeroPaths";
 
 const links = [
@@ -81,6 +85,17 @@ export default function Nav() {
     };
   }, [pathname]);
 
+  // Phone menu (below sm, where the inline links are hidden).
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
   const isDark = dark;
   const textColor = isDark ? "text-sv-cream" : "text-sv-dark";
   const hoverColor = isDark ? "hover:text-white" : "hover:text-sv-indigo";
@@ -89,12 +104,33 @@ export default function Nav() {
     ? "bg-sv-dark text-white border border-white/25 hover:bg-sv-indigo hover:border-transparent"
     : "bg-sv-dark text-white hover:bg-sv-indigo";
 
+  // On phones the bar sits on a frosted pill so it stays legible over content.
+  const phoneBar = isDark
+    ? "bg-sv-dark/60 border-white/10"
+    : "bg-white/75 border-sv-dark/[0.08]";
+
   return (
-    <div className="fixed top-4 md:top-6 left-4 right-4 md:left-8 md:right-8 z-50">
-      <nav className="mx-auto max-w-[1200px] flex items-center justify-between gap-4">
+    <div className="fixed top-3 sm:top-4 md:top-6 left-3 right-3 sm:left-4 sm:right-4 md:left-8 md:right-8 z-50">
+      {/* Tap-outside catcher for the phone menu */}
+      {menuOpen && (
+        <button
+          type="button"
+          aria-label="Close menu"
+          tabIndex={-1}
+          onClick={() => setMenuOpen(false)}
+          className="sm:hidden fixed inset-0 -z-10 bg-sv-dark/20 backdrop-blur-[2px] cursor-default"
+        />
+      )}
+
+      <nav
+        className={`mx-auto max-w-[1200px] flex items-center justify-between gap-3 sm:gap-4
+          pl-4 pr-1.5 py-1.5 rounded-full border backdrop-blur-md transition-colors duration-300 ${phoneBar}
+          sm:p-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:backdrop-blur-none`}
+      >
         <Link
           href="/"
           aria-label="Sharanya Vijayan — back to home"
+          onClick={() => setMenuOpen(false)}
           className="flex items-center shrink-0 p-2 -m-2 transition-transform duration-200 hover:scale-105 active:scale-95"
         >
           <Logo dark={isDark} />
@@ -121,13 +157,69 @@ export default function Nav() {
           })}
         </ul>
 
-        <Link
-          href="/contact"
-          className={`font-body text-xs md:text-sm font-semibold px-4 md:px-5 py-2 rounded-full transition-colors duration-300 whitespace-nowrap ${ctaBg}`}
-        >
-          Get in touch
-        </Link>
+        <div className="flex items-center gap-1.5">
+          <Link
+            href="/contact"
+            onClick={() => setMenuOpen(false)}
+            className={`font-body text-xs md:text-sm font-semibold px-4 md:px-5 py-2 rounded-full transition-colors duration-300 whitespace-nowrap ${ctaBg}`}
+          >
+            Get in touch
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-expanded={menuOpen}
+            aria-controls="phone-menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className={`sm:hidden w-9 h-9 flex items-center justify-center rounded-full transition-colors duration-300 ${
+              isDark ? "text-sv-cream hover:bg-white/10" : "text-sv-dark hover:bg-sv-dark/[0.06]"
+            }`}
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path
+                d={menuOpen ? "M4 4l10 10M14 4L4 14" : "M2.5 6h13M2.5 12h13"}
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        </div>
       </nav>
+
+      {/* Phone menu */}
+      {menuOpen && (
+        <div
+          id="phone-menu"
+          className="sm:hidden mt-2 rounded-3xl border border-sv-dark/[0.08] bg-white/95 backdrop-blur-md shadow-[0_18px_40px_-12px_rgba(25,25,25,0.25)] p-2 animate-fade-in"
+          style={{ animationDuration: "0.2s" }}
+        >
+          <ul className="flex flex-col">
+            {links.map(({ href, label }) => {
+              const active = href === "/#work" ? pathname === "/" : pathname === href;
+              return (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={`${newsreader.className} flex items-center justify-between px-4 py-3.5 rounded-2xl text-sv-dark hover:bg-sv-dark/[0.04] active:bg-sv-dark/[0.06] transition-colors`}
+                    style={{ fontSize: 26, lineHeight: 1.1, letterSpacing: "-0.01em" }}
+                  >
+                    {label}
+                    {active ? (
+                      <span className="w-2 h-2 rounded-full bg-sv-pink" aria-hidden="true" />
+                    ) : (
+                      <span className="font-body text-sm text-sv-dark/30" aria-hidden="true">→</span>
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

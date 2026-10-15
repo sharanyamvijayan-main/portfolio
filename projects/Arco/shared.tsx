@@ -60,10 +60,10 @@ export function Contained({ children, className = "" }: { children: ReactNode; c
 export function StageHeader({ num, title, total = "07" }: { num: string; title: string; total?: string }) {
   return (
     <div className="content-stretch flex flex-col gap-[16px] items-start overflow-clip relative shrink-0 w-full">
-      <div className="[word-break:break-word] content-stretch flex items-baseline justify-between leading-[normal] overflow-clip relative shrink-0 w-full whitespace-nowrap">
-        <div className="content-stretch flex gap-[22px] items-baseline overflow-clip relative shrink-0">
+      <div className="[word-break:break-word] content-stretch flex gap-[12px] items-baseline justify-between leading-[normal] overflow-clip relative shrink-0 w-full whitespace-nowrap">
+        <div className="content-stretch flex gap-[16px] sm:gap-[22px] items-baseline overflow-clip relative min-w-0">
           <p className="ar-newsreader font-normal relative shrink-0 text-[#8a4b30] text-[46px]">{num}</p>
-          <p className="ar-roboto font-medium relative shrink-0 text-[#26262a] text-[15px] tracking-[2.4px]">{title}</p>
+          <p className="ar-roboto font-medium relative min-w-0 whitespace-normal sm:whitespace-nowrap text-[#26262a] text-[13px] sm:text-[15px] tracking-[2px] sm:tracking-[2.4px]">{title}</p>
         </div>
         <p className="ar-roboto font-medium relative shrink-0 text-[#7a7a75] text-[11px] tracking-[1.4px]">
           {num} / {total}

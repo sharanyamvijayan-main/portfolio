@@ -296,10 +296,12 @@ const jumpChips = [
   { href: "#proj-ai-hub", label: "AI Learning Hub", bg: TEAL },
 ];
 
+// The label sits above the chips until there's room for a single row (xl);
+// the chips wrap rather than overflowing the card at in-between widths.
 function JumpBar() {
   return (
     <div
-      className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 rounded-2xl px-5 py-4"
+      className="flex flex-col xl:flex-row xl:items-center gap-4 xl:gap-6 rounded-2xl px-5 py-4"
       style={{ background: "#FFFFFF", border: "1px solid #E4E4DE", boxShadow: "0px 3px 12px 0px rgba(38,38,42,0.09)" }}
     >
       <div className="flex items-center gap-2.5 flex-shrink-0">
@@ -310,7 +312,7 @@ function JumpBar() {
         </div>
         <span style={{ fontFamily: RB, fontWeight: 500, fontSize: 13, color: INK }}>Jump to a case study</span>
       </div>
-      <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 flex-1">
+      <div className="flex flex-wrap items-center gap-3 flex-1 min-w-0">
         {jumpChips.map((c) => (
           <a
             key={c.label}
