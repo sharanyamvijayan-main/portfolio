@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 const RB = "var(--font-roboto)";
 const NR = "var(--font-newsreader)";
@@ -10,7 +9,6 @@ const BODY = "#4A4A46";
 const BLUE = "#0066F5";
 
 export function LockedGate({ next, title, requestHref }: { next: string; title: string; requestHref: string }) {
-  const router = useRouter();
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -24,10 +22,13 @@ export function LockedGate({ next, title, requestHref }: { next: string; title: 
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password, next }),
     }).catch(() => null);
-    if (res?.ok) {
-      const data = await res.json();
-      router.push(data.next);
-      router.refresh();
+    const data = res?.ok ? await res.json().catch(() => null) : null;
+    if (data?.next) {
+      // Full page load, not router.push: in production <Link> prefetches the
+      // locked pages while they're still locked, so the client router has the
+      // proxy's "go to /locked" redirect cached and would land right back here.
+      // A real request carries the new cookie and gets the case study.
+      window.location.assign(data.next);
     } else {
       setError(true);
       setBusy(false);
