@@ -34,11 +34,13 @@ export default function RootLayout({
     // before React hydrates.
     <html lang="en" className={`${syne.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
-        {/* Show the splash on the first page of a session, and again on a browser
-            refresh. Runs before first paint so there's no flash. */}
+        {/* Show the splash on the first page load of a session and on every
+            browser refresh — but not when moving between pages, which are
+            client-side navigations that never re-run this script. Runs before
+            first paint so there's no flash. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var n=performance.getEntriesByType("navigation")[0];if(!sessionStorage.getItem(${JSON.stringify(SPLASH_KEY)})||(n&&n.type==="reload"))document.documentElement.classList.add("splash-active")}catch(e){}`,
+            __html: `try{var k=${JSON.stringify(SPLASH_KEY)},n=performance.getEntriesByType("navigation")[0];if(!sessionStorage.getItem(k)||(n&&n.type==="reload")){sessionStorage.setItem(k,"1");document.documentElement.classList.add("splash-active")}}catch(e){}`,
           }}
         />
       </head>

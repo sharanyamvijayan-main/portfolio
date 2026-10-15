@@ -234,165 +234,200 @@ body {
 }
 
 /* ── Splash ────────────────────────────────────────
-   Plays once per browser session. layout.tsx adds html.splash-active before
-   first paint; Splash.tsx adds .splash-leaving as it lifts (so the hero's own
-   entrance can start) and removes both when done. Timeline, in seconds:
-   0–0.4 discs fan out · 0.38–0.7 top disc floods the screen · 0.53 "S" lands
-   0.73–0.98 pink wipe, "V" slides in · 0.98–1.23 cream wipe, the oversized
-   name types out while the background flickers through the palette ·
-   1.4 the big full stop drops · 1.95–2.35 whole splash lifts away. */
+   Plays on the first page load of a session and on every refresh. layout.tsx adds
+   html.splash-active before first paint; Splash.tsx adds .splash-leaving as it
+   fades (so the hero's own entrance can start) and removes both when done.
+   Opens on a soft colour blink, then hands over to the homepage's own pieces —
+   the dot grid and the three drifting colour fields. Timeline, in seconds:
+   0–1.5 the background eases indigo → pink → green → indigo (each colour
+   holds ~0.45s; deep tones of similar brightness and soft crossfades, so it
+   reads as a colour shift rather than a flashing light) · 0.3–1.1 cream "S"
+   springs up · 0.55–1.35 cream "V" tumbles down · 1.5–2.0 the blink fades out
+   and the letters crossfade from cream into the indigo / pink / green gradient
+   while the colour fields drift in · 2.0–2.8 the mark breathes ·
+   2.8–3.4 letters melt into colour as the fields drift out to the homepage's
+   blob positions · 3.0–3.7 overlay fades.
+   Keep LEAVE_AT / DONE_AT in Splash.tsx in step with the last stage. */
 #sv-splash {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 9990;
   overflow: hidden;
-  background: #FFFBF6;
-  --d: clamp(150px, 24vmin, 240px);
-  --top: 36px; /* top disc sits this far above centre so the fanned stack is centred */
+  /* Same white + dot grid as the homepage, so the fade-out is seamless. */
+  background:
+    #FFFFFF radial-gradient(rgba(25, 25, 25, 0.11) 1.5px, transparent 1.5px) 0 0 / 26px 26px;
   /* Not interactive: Nav and the custom cursor sample the pixel under them with
      elementFromPoint, which must see the real page and not this overlay.
      Click-to-skip is handled on the document instead (Splash.tsx). */
   pointer-events: none;
-  animation: svSplashOut 0.4s cubic-bezier(0.76, 0, 0.24, 1) 1.95s forwards;
+  animation: svSplashOut 0.7s ease 3s forwards;
 }
 
 html.splash-active #sv-splash { display: block; }
-html.splash-skip #sv-splash { animation: svSplashSkip 0.4s cubic-bezier(0.76, 0, 0.24, 1) forwards; }
+html.splash-skip #sv-splash { animation: svSplashSkip 0.45s ease forwards; }
 
-/* Hold the page's own entrance animations until the splash is lifting. */
+/* Hold the page's own entrance animations until the splash is fading. */
 html.splash-active:not(.splash-leaving) .animate-slide-up,
 html.splash-active:not(.splash-leaving) .animate-fade-in {
   animation-play-state: paused;
 }
 
-.sv-splash__discs {
+/* Colour fields — the homepage's hero blobs, turned up */
+.sv-splash__field {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: var(--d);
-  height: var(--d);
-  transform: translate(-50%, calc(-50% - var(--top)));
-  animation: svSplashDiscsHide 0.01s linear 0.38s forwards;
-}
-
-.sv-splash__disc {
-  position: absolute;
-  inset: 0;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
   border-radius: 50%;
   opacity: 0;
-  animation: svSplashFan 0.4s cubic-bezier(0.16, 1, 0.3, 1) calc(0.04s + var(--i) * 0.035s) forwards;
+  will-change: transform, opacity;
+}
+.sv-splash__field--indigo { --size: 64vmax; animation: svSplashFieldIndigo 2.8s cubic-bezier(0.45, 0, 0.25, 1) 0.9s forwards; background: radial-gradient(circle, rgba(39, 8, 160, 0.55) 0%, transparent 62%); }
+.sv-splash__field--pink   { --size: 60vmax; animation: svSplashFieldPink 2.8s cubic-bezier(0.45, 0, 0.25, 1) 0.9s forwards;   background: radial-gradient(circle, rgba(221, 3, 105, 0.36) 0%, transparent 62%); }
+.sv-splash__field--green  { --size: 60vmax; animation: svSplashFieldGreen 2.8s cubic-bezier(0.45, 0, 0.25, 1) 0.9s forwards;  background: radial-gradient(circle, rgba(9, 129, 74, 0.42) 0%, transparent 62%); }
+
+/* Fly in from the corners, swirl around the middle, then drift out to roughly
+   where the homepage's own blobs sit (indigo top-right, pink bottom-left,
+   green centre) and soften to their strength. */
+@keyframes svSplashFieldIndigo {
+  0%   { transform: translate(65vw, -70vh) scale(0.5); opacity: 0; }
+  32%  { transform: translate(17vw, -15vh) scale(1); opacity: 1; }
+  55%  { transform: translate(12vw, -20vh) scale(1.05); opacity: 1; }
+  75%  { transform: translate(19vw, -11vh) scale(1); opacity: 1; }
+  100% { transform: translate(30vw, -24vh) scale(0.8); opacity: 0.45; }
+}
+@keyframes svSplashFieldPink {
+  0%   { transform: translate(-65vw, 70vh) scale(0.5); opacity: 0; }
+  32%  { transform: translate(-18vw, 12vh) scale(1); opacity: 1; }
+  55%  { transform: translate(-13vw, 17vh) scale(1.06); opacity: 1; }
+  75%  { transform: translate(-20vw, 9vh) scale(1); opacity: 1; }
+  100% { transform: translate(-34vw, 26vh) scale(0.75); opacity: 0.45; }
+}
+@keyframes svSplashFieldGreen {
+  0%   { transform: translate(10vw, 85vh) scale(0.5); opacity: 0; }
+  36%  { transform: translate(5vw, 24vh) scale(1); opacity: 1; }
+  60%  { transform: translate(-2vw, 28vh) scale(1.08); opacity: 1; }
+  80%  { transform: translate(7vw, 21vh) scale(1); opacity: 1; }
+  100% { transform: translate(-6vw, 8vh) scale(0.75); opacity: 0.4; }
 }
 
-.sv-splash__layer {
+/* Blink: the splash opens on solid colour that eases between deep brand tones
+   (similar brightness, so no light/dark flashing), then fades to the fields. */
+.sv-splash__blink {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Starts exactly as the top disc (same size, same spot) then grows to cover. */
-.sv-splash__iris {
   background: #2708A0;
-  clip-path: circle(0 at 50% calc(50% - var(--top)));
-  animation: svSplashIris 0.32s cubic-bezier(0.76, 0, 0.24, 1) 0.38s forwards;
+  animation: svSplashBlink 2s linear forwards;
+}
+@keyframes svSplashBlink {
+  0%, 20%    { background: #2708A0; opacity: 1; }
+  27.5%, 42.5% { background: #B3125D; opacity: 1; }
+  50%, 65%   { background: #0B6B40; opacity: 1; }
+  72.5%, 75% { background: #2708A0; opacity: 1; }
+  100%       { background: #2708A0; opacity: 0; }
 }
 
-.sv-splash__wipe { clip-path: inset(100% 0 0 0); }
-.sv-splash__pink { background: #DD0369; animation: svSplashWipe 0.25s cubic-bezier(0.76, 0, 0.24, 1) 0.73s forwards; }
-/* Wipes up, and from the moment it starts the background and ink flicker through the palette. */
-.sv-splash__cream {
-  background: #FCEBDA;
-  color: #191919;
-  animation:
-    svSplashWipe 0.25s cubic-bezier(0.76, 0, 0.24, 1) 0.98s forwards,
-    svSplashFlicker 0.84s step-end 1.02s forwards;
-}
-
-.sv-splash__glyph { height: 62vmin; width: auto; opacity: 0; }
-.sv-splash__glyph--s { animation: svSplashGlyphS 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.53s forwards; }
-.sv-splash__glyph--v { animation: svSplashGlyphV 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.83s forwards; }
-
-/* The name is deliberately too big for the screen: two lines that bleed off both
-   edges, with a slow push-in on top. */
+/* The monogram. Proportions follow the logo's 964 × 534 viewBox: the S spans
+   0–467, the V 362–963 (they overlap along the top bar). */
 .sv-splash__lockup {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: var(--font-newsreader-splash), Georgia, serif;
-  font-weight: 400;
-  font-size: min(28.5vw, 50vh);
-  line-height: 0.86;
-  letter-spacing: -0.045em;
-  white-space: nowrap;
-  animation: svSplashPush 1.3s cubic-bezier(0.16, 1, 0.3, 1) 1.02s forwards;
+  --h: min(30vh, 22vw);
+  --w: calc(var(--h) * 964 / 534);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--w);
+  height: var(--h);
+  margin: calc(var(--h) / -2) 0 0 calc(var(--h) * -482 / 534);
+  animation: svSplashMelt 0.6s cubic-bezier(0.4, 0, 0.6, 1) 2.8s forwards;
 }
-
-.sv-splash__line { display: flex; align-items: baseline; }
-
-.sv-splash__char-mask { display: inline-block; overflow: hidden; padding: 0.14em 0; margin: -0.14em 0; }
-.sv-splash__char {
-  display: inline-block;
-  transform: translateY(115%);
-  animation: svSplashChar 0.3s cubic-bezier(0.16, 1, 0.3, 1) calc(1.08s + var(--c) * 0.015s) forwards;
+.sv-splash__breathe {
+  position: absolute;
+  inset: 0;
+  animation: svSplashBreathe 0.9s ease-in-out 1.9s forwards;
 }
-
-/* The pink full stop: drops in from above and squashes on landing. */
-.sv-splash__dot {
-  display: inline-block;
-  width: 0.2em;
-  height: 0.2em;
-  margin-left: 0.03em;
-  border-radius: 50%;
-  background: #DD0369;
+.sv-splash__glyph {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  /* One gradient laid across the whole mark — each letter shows its slice. */
+  background: linear-gradient(100deg,
+    #2708A0 0%, #2708A0 24%,
+    #DD0369 36%, #DD0369 52%,
+    #09814A 66%, #09814A 100%);
+  background-size: calc(var(--w) * 1.5) 100%;
+  background-repeat: no-repeat;
   opacity: 0;
+}
+.sv-splash__glyph--s {
+  left: 0;
+  width: calc(var(--h) * 467.3 / 534);
   transform-origin: 50% 100%;
-  animation: svSplashDot 0.4s cubic-bezier(0.34, 1.4, 0.64, 1) 1.4s forwards;
+  animation: svSplashSpringUp 0.8s linear 0.3s forwards, svSplashBandsS 2.4s ease-in-out infinite alternate;
+}
+.sv-splash__glyph--v {
+  left: calc(var(--h) * 362 / 534);
+  width: calc(var(--h) * 601.2 / 534);
+  transform-origin: 50% 0%;
+  animation: svSplashTumble 0.8s linear 0.55s forwards, svSplashBandsV 2.4s ease-in-out infinite alternate;
 }
 
-@keyframes svSplashFan {
-  from { opacity: 1; transform: translateY(0) scale(0.55); }
-  to   { opacity: 1; transform: translateY(var(--y)) scale(1); }
+@keyframes svSplashBandsS {
+  from { background-position: 0 0; }
+  to   { background-position: calc(var(--w) * -0.22) 0; }
 }
-@keyframes svSplashDiscsHide { to { opacity: 0; visibility: hidden; } }
-@keyframes svSplashIris {
-  from { clip-path: circle(calc(var(--d) / 2) at 50% calc(50% - var(--top))); }
-  to   { clip-path: circle(150vmax at 50% 50%); }
+@keyframes svSplashBandsV {
+  from { background-position: calc(var(--h) * -362 / 534) 0; }
+  to   { background-position: calc(var(--h) * -362 / 534 - var(--w) * 0.22) 0; }
 }
-@keyframes svSplashWipe { to { clip-path: inset(0 0 0 0); } }
-/* Hard-stepped colour flicker; ends on the cream the page lifts away from. */
-@keyframes svSplashFlicker {
-  0%      { background: #2708A0; color: #FCEBDA; }
-  8.33%   { background: #FFD9B8; color: #191919; }
-  16.66%  { background: #09814A; color: #FCEBDA; }
-  25%     { background: #B9AEF5; color: #191919; }
-  33.33%  { background: #191919; color: #FCEBDA; }
-  41.66%  { background: #FCEBDA; color: #29149B; }
-  50%     { background: #09814A; color: #FFD9B8; }
-  58.33%  { background: #2708A0; color: #B9AEF5; }
-  66.66%  { background: #FFD9B8; color: #191919; }
-  75%     { background: #B9AEF5; color: #2708A0; }
-  83.33%  { background: #191919; color: #FFD9B8; }
-  91.66%, 100% { background: #FCEBDA; color: #191919; }
+
+/* Cream while the background blinks, then crossfades into the gradient. */
+.sv-splash__glyph::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #FCEBDA;
+  animation: svSplashInk 2s linear forwards;
 }
-@keyframes svSplashGlyphS {
-  from { opacity: 0; transform: translateY(14%) scale(0.88); }
-  to   { opacity: 1; transform: none; }
+@keyframes svSplashInk {
+  0%, 75% { opacity: 1; }
+  100%    { opacity: 0; }
 }
-@keyframes svSplashGlyphV {
-  from { opacity: 0; transform: translateX(24%) rotate(-9deg); }
-  to   { opacity: 1; transform: none; }
+
+/* S: springs up from below, overshoots, settles. */
+@keyframes svSplashSpringUp {
+  0%   { opacity: 0; transform: translateY(70%) scale(0.55) rotate(-14deg); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  15%  { opacity: 1; }
+  55%  { opacity: 1; transform: translateY(-7%) scale(1.05) rotate(4deg); animation-timing-function: ease-in-out; }
+  78%  { opacity: 1; transform: translateY(2%) scale(0.99) rotate(-1.5deg); animation-timing-function: ease-in-out; }
+  100% { opacity: 1; transform: none; }
 }
-@keyframes svSplashPush { to { transform: scale(1.08); } }
-@keyframes svSplashChar { to { transform: translateY(0); } }
-@keyframes svSplashDot {
-  0%   { opacity: 1; transform: translateY(-3.2em) scaleY(1); }
-  62%  { opacity: 1; transform: translateY(0) scaleY(0.7); }
-  100% { opacity: 1; transform: translateY(0) scaleY(1); }
+/* V: tumbles down on a tilt, bounces, rocks to a stop. */
+@keyframes svSplashTumble {
+  0%   { opacity: 0; transform: translateY(-80%) scale(0.6) rotate(22deg); animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0.4); }
+  15%  { opacity: 1; }
+  50%  { opacity: 1; transform: translateY(4%) scale(1.02, 0.95) rotate(-6deg); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  72%  { opacity: 1; transform: translateY(-4%) rotate(3deg); animation-timing-function: ease-in-out; }
+  88%  { opacity: 1; transform: translateY(0) rotate(-1deg); animation-timing-function: ease-out; }
+  100% { opacity: 1; transform: none; }
 }
-@keyframes svSplashOut { to { transform: translateY(-100%); } }
-@keyframes svSplashSkip { to { transform: translateY(-100%); } }
+@keyframes svSplashBreathe {
+  50%  { transform: scale(1.035); }
+  100% { transform: scale(1.02); }
+}
+/* Letters swell, blur and melt into the colour fields. */
+@keyframes svSplashMelt {
+  to { transform: scale(1.35); filter: blur(28px); opacity: 0; }
+}
+@keyframes svSplashOut  { to { opacity: 0; visibility: hidden; } }
+@keyframes svSplashSkip { to { opacity: 0; visibility: hidden; } }
 
 @media (prefers-reduced-motion: reduce) {
   html.splash-active #sv-splash { display: none; }

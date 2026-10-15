@@ -1,3 +1,3 @@
-// Shared by layout.tsx (server, inline head script) and components/Splash.tsx
-// (client). Kept out of the client file so the server can read the real value.
+// Session key for the splash. Read and set by the inline head script in
+// layout.tsx (server-rendered), so it lives outside any client component.
 export const SPLASH_KEY = "sv-splash-seen";
