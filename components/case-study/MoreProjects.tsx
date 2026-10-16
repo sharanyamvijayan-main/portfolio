@@ -55,6 +55,7 @@ export function MoreProjects({
         </div>
 
         <div
+          data-motion-group
           className="flex gap-5 overflow-x-auto pb-4 md:grid md:grid-cols-3 md:overflow-visible md:pb-0"
           style={{ scrollSnapType: "x mandatory" }}
         >

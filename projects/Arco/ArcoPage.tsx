@@ -12,31 +12,52 @@ import { PhysicalPrototype } from "./PhysicalPrototype";
 import { Specifications } from "./Specifications";
 import { Materials } from "./Materials";
 import { Closing } from "./Closing";
-import { Contained } from "./shared";
+import { Contained, RUST } from "./shared";
 import { MoreProjects } from "@/components/case-study/MoreProjects";
+import { SectionRail } from "@/components/case-study/SectionRail";
+import ScrollMotion from "@/components/case-study/ScrollMotion";
+
+// Side table of contents; each id is an anchor wrapper below.
+const SECTIONS = [
+  { id: "overview", label: "Overview" },
+  { id: "moodboard", label: "Moodboard" },
+  { id: "form-generation", label: "Form Generation" },
+  { id: "fabrication", label: "Fabrication" },
+  { id: "renders", label: "Renders" },
+  { id: "prototype", label: "Prototype" },
+  { id: "specifications", label: "Specifications" },
+  { id: "materials", label: "Materials" },
+];
+const ANCHOR = "scroll-mt-24";
 
 export default function Arco() {
   return (
     <main className={`${arFonts} min-h-screen bg-white`}>
       <Cover />
 
-      <div className="mt-[74px]">
-        <Contained>
-          <TitleBlock />
-        </Contained>
-      </div>
+      <SectionRail sections={SECTIONS} accent={RUST} contentId="arco-content" fontClass="ar-roboto" />
 
-      <div className="mt-[74px] flex flex-col gap-[60px]">
-        <Objective />
-        <Moodboard />
-        <FormGeneration />
-        <Fabrication />
-        <Renders />
-        <PhysicalPrototype />
-        <Specifications />
-        <Materials />
-        <Closing />
+      <ScrollMotion accent={RUST} />
+
+      {/* Closing sits outside #arco-content so the rail fades before the full-bleed hero shot. */}
+      <div id="arco-content" className="mt-[74px] mb-[60px] flex flex-col gap-[60px]">
+        <div className="flex flex-col gap-[74px]">
+          <Contained>
+            <div id="overview" className={ANCHOR}>
+              <TitleBlock />
+            </div>
+          </Contained>
+          <Objective />
+        </div>
+        <div id="moodboard" className={ANCHOR}><Moodboard /></div>
+        <div id="form-generation" className={ANCHOR}><FormGeneration /></div>
+        <div id="fabrication" className={ANCHOR}><Fabrication /></div>
+        <div id="renders" className={ANCHOR}><Renders /></div>
+        <div id="prototype" className={ANCHOR}><PhysicalPrototype /></div>
+        <div id="specifications" className={ANCHOR}><Specifications /></div>
+        <div id="materials" className={ANCHOR}><Materials /></div>
       </div>
+      <Closing />
 
       <MoreProjects currentSlug="arco" index={8} />
     </main>

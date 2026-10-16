@@ -5,6 +5,7 @@ import { Newsreader, Roboto, Fira_Code } from "next/font/google";
 import { CaseStudyNav } from "./CaseStudyNav";
 import { ProblemSolutionsScrolly, type ProblemSolutionItem } from "./ProblemSolutionsScrolly";
 import Reveal from "@/components/Reveal";
+import ScrollMotion from "@/components/case-study/ScrollMotion";
 
 // Same editorial type system as the AbbVie case studies:
 // Newsreader (serif headings) · Roboto (body / eyebrows) · Fira Code (numerals).
@@ -140,7 +141,7 @@ function NouriLogo() {
 
 function Hero() {
   return (
-    <section className="relative w-full overflow-hidden" style={{ background: PERI }}>
+    <section data-parallax className="relative w-full overflow-hidden" style={{ background: PERI }}>
       <div className="hidden md:block pt-24">
         <div className="relative w-full max-w-[1800px] mx-auto overflow-hidden" style={{ aspectRatio: "1400 / 800" }}>
           <div className="absolute" style={{ left: "6.571%", top: "6.75%", width: "16.071%" }}>
@@ -873,7 +874,7 @@ function BrandOutro() {
 // ═══════════════════════════════════════════════════════════════════════
 
 const otherWork = [
-  { slug: "pinreal", label: "UX DESIGN · PRODUCT DESIGN", title: "PinReal.", body: "Where authenticity meets creativity — a BeReal. × Pinterest concept mashup.", grad: "linear-gradient(90deg, #2708A0 0%, #0B0630 100%)", color: "#8FA8FF" },
+  { slug: "pinreal", label: "UX DESIGN · PRODUCT DESIGN", title: "PinReal.", body: "Where authenticity meets creativity — a BeReal. × Pinterest concept mashup.", grad: "#F4001F url(/pinreal-card.png) center 75% / cover", color: "#F695A4" },
   { slug: "arco", label: "INDUSTRIAL DESIGN", title: "Arco", body: "A chair built around one continuous arc that supports, welcomes, and lasts.", grad: "#D2C4B7 url(/arco-card.webp) center / cover", color: "#E3B79F" },
   { slug: "oblique-vase", label: "INDUSTRIAL DESIGN", title: "Oblique Vase", body: "A dual-layered glass vase that leans off-center — a quiet tilt towards beauty.", grad: "#9AA6C8 url(/oblique-vase-card.webp) center / cover", color: "#A9B8F0" },
 ];
@@ -924,6 +925,7 @@ export default function Nouri() {
       style={{ backgroundColor: DARK, fontFamily: RB }}
     >
       <CaseStudyNav accent={LEAF} />
+      <ScrollMotion accent={LEAF} />
       <Hero />
       <TitleMeta />
       <div id="nouri-content" className="flex flex-col gap-24 md:gap-28 py-20 md:py-28">

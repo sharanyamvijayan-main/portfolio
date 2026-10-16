@@ -4,6 +4,7 @@ import { Newsreader, Roboto } from "next/font/google";
 import { MoreProjects } from "@/components/case-study/MoreProjects";
 import Reveal from "@/components/Reveal";
 import { CaseStudyNav } from "./CaseStudyNav";
+import ScrollMotion from "@/components/case-study/ScrollMotion";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -252,6 +253,7 @@ export default function Remember() {
       style={{ backgroundColor: PAGE_BG, fontFamily: RB }}
     >
       <CaseStudyNav accent={RUST} />
+      <ScrollMotion accent={RUST} />
 
       {/* ── Top: eyebrow, then the bird + wordmark lockup as the title, then meta ── */}
       <div className="w-full max-w-[1168px] mx-auto px-6 md:px-0 pt-24 md:pt-28 flex flex-col gap-7">

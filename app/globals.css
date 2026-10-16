@@ -468,3 +468,14 @@ html.splash-active:not(.splash-leaving) .animate-fade-in {
 .ov-newsreader { font-family: var(--font-ov-newsreader), Georgia, serif; }
 .ov-krona { font-family: var(--font-ov-krona), system-ui, sans-serif; }
 .ov-jura { font-family: var(--font-ov-jura), system-ui, sans-serif; }
+
+/* ── Case-study scroll motion (components/case-study/ScrollMotion.tsx) ── */
+.m-anim {
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.m-hide { opacity: 0; }
+.m-up.m-hide { transform: translate3d(0, 28px, 0); }
+.m-left.m-hide { transform: translate3d(-48px, 0, 0); }
+.m-right.m-hide { transform: translate3d(48px, 0, 0); }
+.m-zoom.m-hide { transform: scale(0.965); }

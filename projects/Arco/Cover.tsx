@@ -7,7 +7,7 @@ import { hero } from "./assets";
 export function Cover() {
   return (
     // backgroundColor is also what the site nav samples to pick dark text.
-    <section style={{ backgroundColor: "#d2c4b7" }}>
+    <section data-parallax style={{ backgroundColor: "#d2c4b7" }}>
       <ScaledCanvas w={1440} h={680} maxW={1920} style={{ backgroundColor: "#d2c4b7" }}>
         <div className="absolute h-[900px] left-0 top-[-110px] w-[1440px]">
           <img alt="Arco chair render" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={hero.Render9} />

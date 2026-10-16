@@ -3,6 +3,8 @@ import type { CSSProperties, ReactNode } from "react";
 import { Newsreader, Roboto, Fira_Code, Space_Grotesk } from "next/font/google";
 import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
+import { HeroCanvas } from "@/components/case-study/HeroCanvas";
+import ScrollMotion from "@/components/case-study/ScrollMotion";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -255,10 +257,7 @@ function GiantWordmark() {
 
 function Hero() {
   return (
-    <div
-      className="relative w-full overflow-hidden"
-      style={{ aspectRatio: "1440 / 680", background: "linear-gradient(105deg, #0A2640 0%, #1A4C82 56%, #2F73B4 100%)" }}
-    >
+    <HeroCanvas w={1440} h={680} background={"linear-gradient(105deg, #0A2640 0%, #1A4C82 56%, #2F73B4 100%)"}>
       <div
         className="absolute rounded-full pointer-events-none"
         style={{ left: "58%", top: "-30%", width: "56%", height: "120%", background: "radial-gradient(circle at 50% 50%, rgba(90,160,220,0.4) 0%, rgba(90,160,220,0) 60%)" }}
@@ -273,7 +272,7 @@ function Hero() {
       <ProposedCard />
       <TargetCard />
       <InputsCard />
-    </div>
+    </HeroCanvas>
   );
 }
 
@@ -652,6 +651,7 @@ export default function AiLearningHub() {
       style={{ backgroundColor: PAGE_BG, fontFamily: RB }}
     >
       <CaseStudyNav accent={BLUE} />
+      <ScrollMotion accent={BLUE} />
       <Hero />
       <TitleMeta />
       <div id="alh-content" className="flex flex-col gap-24 md:gap-28 py-20 md:py-28">

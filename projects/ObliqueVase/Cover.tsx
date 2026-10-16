@@ -7,7 +7,7 @@ import { hero } from "./assets";
 export function Cover() {
   return (
     // backgroundColor is also what the site nav samples to pick dark text.
-    <section style={{ backgroundColor: "#cdcdcd" }}>
+    <section data-parallax style={{ backgroundColor: "#cdcdcd" }}>
       <ScaledCanvas w={1440} h={680} maxW={1920} style={{ backgroundColor: "#cdcdcd" }}>
         <div className="absolute bg-white h-[810px] left-0 overflow-clip top-[-65.25px] w-[1440px]">
           <div className="absolute h-[902.25px] left-[-208.5px] top-[-81px] w-[1608.289px]">

@@ -3,6 +3,9 @@ import type { CSSProperties, ReactNode } from "react";
 import { Newsreader, Roboto, Fira_Code, Space_Grotesk } from "next/font/google";
 import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
+import CountUp from "@/components/CountUp";
+import { HeroCanvas } from "@/components/case-study/HeroCanvas";
+import ScrollMotion from "@/components/case-study/ScrollMotion";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -307,10 +310,7 @@ function UnityStatsBand() {
 
 function Hero() {
   return (
-    <div
-      className="relative w-full overflow-hidden"
-      style={{ aspectRatio: "1440 / 680", background: "linear-gradient(115deg, rgba(0,82,214,1) 0%, rgba(10,127,245,1) 78%)" }}
-    >
+    <HeroCanvas w={1440} h={680} background={"linear-gradient(115deg, rgba(0,82,214,1) 0%, rgba(10,127,245,1) 78%)"}>
       <div
         className="absolute rounded-full pointer-events-none"
         style={{ left: "61.111%", top: "-23.529%", width: "59.722%", height: "102.941%", background: "radial-gradient(circle at 50% 50%, rgba(0,180,245,0.62) 0%, rgba(0,180,245,0) 50%)" }}
@@ -326,7 +326,7 @@ function Hero() {
       <UnityContextCTA />
       <UnityDieCutSticker />
       <UnityStatsBand />
-    </div>
+    </HeroCanvas>
   );
 }
 
@@ -660,12 +660,12 @@ function ProcessSection() {
 
       <div className="flex flex-wrap items-center justify-center gap-8 md:gap-10 rounded-2xl" style={{ padding: "26px 32px", background: "#F1F3FF" }}>
         <div className="flex flex-col gap-1">
-          <span style={{ fontFamily: NR, fontWeight: 700, fontSize: 58, lineHeight: "1em", color: LAVENDER }}>7</span>
+          <CountUp to={7} style={{ fontFamily: NR, fontWeight: 700, fontSize: 58, lineHeight: "1em", color: LAVENDER }} />
           <span style={{ fontFamily: RB, fontSize: 15, lineHeight: "1.22em", color: META }}>Flows designed</span>
         </div>
         <span className="hidden md:block" style={{ width: 1.87, height: 67.33, background: "#CCD4E5" }} />
         <div className="flex flex-col gap-1">
-          <span style={{ fontFamily: NR, fontWeight: 700, fontSize: 58, letterSpacing: "-0.05em", lineHeight: "1em", color: BLUE }}>150+</span>
+          <CountUp to={150} suffix="+" style={{ fontFamily: NR, fontWeight: 700, fontSize: 58, letterSpacing: "-0.05em", lineHeight: "1em", color: BLUE }} />
           <span style={{ fontFamily: RB, fontSize: 15, lineHeight: "1.22em", color: META }}>Screens designed &amp; iterated</span>
         </div>
       </div>
@@ -1078,6 +1078,7 @@ export default function CelebrationOfTechnology() {
       style={{ backgroundColor: PAGE_BG, fontFamily: RB }}
     >
       <CaseStudyNav accent={BLUE} />
+      <ScrollMotion accent={BLUE} />
       <Hero />
       <TitleMeta />
       <div id="cot-content" className="flex flex-col gap-24 md:gap-28 py-20 md:py-28">

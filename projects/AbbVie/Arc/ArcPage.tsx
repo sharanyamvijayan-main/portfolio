@@ -3,6 +3,8 @@ import type { CSSProperties, ReactNode } from "react";
 import { Newsreader, Roboto, Fira_Code, Space_Grotesk } from "next/font/google";
 import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
+import { HeroCanvas } from "@/components/case-study/HeroCanvas";
+import ScrollMotion from "@/components/case-study/ScrollMotion";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -641,10 +643,7 @@ function NoteCard() {
 
 function Hero() {
   return (
-    <div
-      className="relative w-full overflow-hidden"
-      style={{ aspectRatio: "1440 / 680", background: "linear-gradient(120deg, rgba(7,29,73,1) 0%, rgba(116,85,173,1) 76%)" }}
-    >
+    <HeroCanvas w={1440} h={680} background={"linear-gradient(120deg, rgba(7,29,73,1) 0%, rgba(116,85,173,1) 76%)"}>
       <div
         className="absolute rounded-full pointer-events-none"
         style={{ left: "-15.278%", top: "-38.235%", width: "62.5%", height: "132.353%", background: "radial-gradient(circle at 50% 50%, rgba(116,85,173,0.85) 0%, rgba(116,85,173,0) 100%)" }}
@@ -656,7 +655,7 @@ function Hero() {
       <AsFoundCard />
       <ReworkedCard />
       <NoteCard />
-    </div>
+    </HeroCanvas>
   );
 }
 
@@ -1186,6 +1185,7 @@ export default function Arc() {
       style={{ backgroundColor: PAGE_BG, fontFamily: RB }}
     >
       <CaseStudyNav accent={LAVENDER} />
+      <ScrollMotion accent={LAVENDER} />
       <Hero />
       <TitleMeta />
       <div className="pt-14 md:pt-16">

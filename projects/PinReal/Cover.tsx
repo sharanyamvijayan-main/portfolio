@@ -6,7 +6,7 @@ export function Cover() {
   return (
     // backgroundColor is the banner's own top colour — it's also what the site
     // nav samples to pick dark text.
-    <section style={{ backgroundColor: "#F1CDD2" }}>
+    <section data-parallax style={{ backgroundColor: "#F1CDD2" }}>
       <Image
         src="/images/pinreal/assets/hero-banner.webp"
         alt="PinReal. — where authenticity meets creativity, with phone mockups of the app"

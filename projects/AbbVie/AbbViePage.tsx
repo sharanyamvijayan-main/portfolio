@@ -4,6 +4,8 @@ import type { CSSProperties, ReactNode } from "react";
 import { Newsreader, Roboto, Fira_Code } from "next/font/google";
 import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
+import { HeroCanvas } from "@/components/case-study/HeroCanvas";
+import ScrollMotion from "@/components/case-study/ScrollMotion";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -199,13 +201,7 @@ function Toast() {
 // same technique as the intro collage in Nouri's case study.
 function Hero() {
   return (
-    <div
-      className="relative w-full overflow-hidden"
-      style={{
-        aspectRatio: "1440 / 582",
-        background: "linear-gradient(120deg, rgba(7,29,73,1) 0%, rgba(19,42,107,1) 74%)",
-      }}
-    >
+    <HeroCanvas w={1440} h={582} background={"linear-gradient(120deg, rgba(7,29,73,1) 0%, rgba(19,42,107,1) 74%)"}>
       {/* Glows */}
       <div
         className="absolute rounded-full pointer-events-none"
@@ -232,7 +228,7 @@ function Hero() {
       <FigmaMcpStatus />
       <FigmaMakeChip />
       <Toast />
-    </div>
+    </HeroCanvas>
   );
 }
 
@@ -498,6 +494,7 @@ export default function AbbVie() {
       style={{ backgroundColor: PAGE_BG, fontFamily: RB }}
     >
       <CaseStudyNav accent={BLUE} />
+      <ScrollMotion accent={BLUE} />
 
       <Hero />
       <TitleMeta />
