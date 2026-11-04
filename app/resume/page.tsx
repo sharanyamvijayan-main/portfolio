@@ -1,14 +1,7 @@
-import { Newsreader } from "next/font/google";
+import { newsreaderHero as newsreader } from "@/lib/fonts";
 import Reveal from "@/components/Reveal";
 
 // Same serif used for the homepage hero, About page, and AbbVie case-study headlines.
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader-hero",
-  display: "swap",
-});
 
 export default function Resume() {
   return (

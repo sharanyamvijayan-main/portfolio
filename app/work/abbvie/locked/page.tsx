@@ -1,10 +1,7 @@
 import Link from "next/link";
-import { Newsreader, Roboto } from "next/font/google";
+import { newsreader, roboto } from "@/lib/fonts";
 import { LockedGate } from "@/projects/AbbVie/LockedGate";
 import { safeNext } from "@/lib/abbvieAccess";
-
-const newsreader = Newsreader({ subsets: ["latin"], weight: ["400"], variable: "--font-newsreader", display: "swap" });
-const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-roboto", display: "swap" });
 
 export const metadata = { title: "Password required — Sharanya Vijayan", robots: { index: false } };
 

@@ -1,40 +1,12 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { Newsreader, Roboto, Fira_Code, Space_Grotesk } from "next/font/google";
+import { newsreader, roboto, firaCode, spaceGrotesk } from "@/lib/fonts";
 import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
 import { HeroCanvas } from "@/components/case-study/HeroCanvas";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
 
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-roboto",
-  display: "swap",
-});
-
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-fira-code",
-  display: "swap",
-});
-
 // Space Grotesk stands in for the giant display wordmark in the hero.
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "700"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
 
 const NR = "var(--font-newsreader)";
 const RB = "var(--font-roboto)";
@@ -152,7 +124,7 @@ function AsFoundCard() {
         </div>
         <div className="flex flex-col" style={{ gap: fs(6) }}>
           {rows.map((r, i) => (
-            <div key={i} className="flex" style={{ gap: fs(6) }}>
+            <div key={i} className="flex hb-grow" style={{ gap: fs(6), ["--t" as string]: `${0.6 + i * 0.12}s` }}>
               {r.map((w, j) => (
                 <span key={j} className="rounded-[3px]" style={{ width: `${w}%`, height: fs(13), background: "#DCE3EC" }} />
               ))}
@@ -180,7 +152,7 @@ function ProposedCard() {
           <span className="flex-1" />
           <span style={{ fontFamily: FC, fontSize: fs(9), color: "#A8A8A2" }}>5 templates</span>
         </div>
-        <div className="flex flex-col" style={{ gap: fs(7) }}>
+        <div className="flex flex-col hb-stagger" style={{ gap: fs(7), ["--t" as string]: "1s" }}>
           {templates.map((t, i) => (
             <div key={t} className="flex items-center rounded-lg" style={{ gap: fs(10), padding: fs(9), border: "1px solid rgba(38,38,42,0.09)" }}>
               <span
@@ -225,7 +197,7 @@ function InputsCard() {
     <HeroBox leftPct={70.5} topPct={47} widthPct={19.5}>
       <div className="flex flex-col rounded-2xl bg-white" style={{ padding: 18, gap: 9, boxShadow: "0px 20px 46px rgba(3,15,51,0.26)" }}>
         <span className="uppercase" style={{ fontFamily: RB, fontWeight: 500, fontSize: fs(9), letterSpacing: "0.13em", color: TEAL }}>Three independent inputs</span>
-        <div className="flex flex-col" style={{ gap: fs(6) }}>
+        <div className="flex flex-col hb-stagger" style={{ gap: fs(6), ["--t" as string]: "1.8s" }}>
           {inputs.map((it) => (
             <div key={it} className="flex items-center" style={{ gap: fs(7) }}>
               <span className="rounded-full flex-shrink-0" style={{ width: fs(4), height: fs(4), background: TEAL }} />
@@ -233,7 +205,7 @@ function InputsCard() {
             </div>
           ))}
         </div>
-        <span style={{ fontFamily: RB, fontWeight: 500, fontSize: fs(11), color: GREEN }}>All three pointed the same way.</span>
+        <span className="hb-fade" style={{ fontFamily: RB, fontWeight: 500, fontSize: fs(11), color: GREEN, ["--t" as string]: "2.3s" }}>All three pointed the same way.</span>
       </div>
     </HeroBox>
   );

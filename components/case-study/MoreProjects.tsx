@@ -1,12 +1,10 @@
 import Link from "next/link";
-import { Newsreader, Roboto } from "next/font/google";
+import { newsreader as display, roboto as body } from "@/lib/fonts";
 import { projects } from "@/lib/projects";
 
 // Match the AbbVie case-study type system — Newsreader for headings,
 // Roboto for labels and body — so the strip reads the same on every
 // case study rather than switching to the homepage's Syne/Inter.
-const display = Newsreader({ subsets: ["latin"], weight: ["400", "500"], display: "swap" });
-const body = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"], display: "swap" });
 
 // Finished card artwork — same images the homepage work grid uses.
 // `size` / `position` override the default cover-centre framing per card

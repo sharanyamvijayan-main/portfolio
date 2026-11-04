@@ -1,41 +1,13 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { Newsreader, Roboto, Fira_Code, Space_Grotesk } from "next/font/google";
+import { newsreader, roboto, firaCode, spaceGrotesk } from "@/lib/fonts";
 import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
 import { HeroCanvas } from "@/components/case-study/HeroCanvas";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
 
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-roboto",
-  display: "swap",
-});
-
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-fira-code",
-  display: "swap",
-});
-
 // Space Grotesk stands in for the hero's giant display moments — matches
 // the treatment used on the other AbbVie sub-pages.
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "700"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
 
 const NR = "var(--font-newsreader)";
 const RB = "var(--font-roboto)";
@@ -578,8 +550,8 @@ function AsFoundCard() {
   return (
     <HeroBox leftPct={9.444} topPct={29.118} widthPct={26.389}>
       <div
-        className="flex flex-col rounded-xl"
-        style={{ padding: 22, gap: 9, background: "rgba(255,255,255,0.94)", border: "1px solid rgba(38,38,42,0.5)" }}
+        className="flex flex-col rounded-xl hb-grow"
+        style={{ padding: 22, gap: 9, background: "rgba(255,255,255,0.94)", border: "1px solid rgba(38,38,42,0.5)", ["--t" as string]: "0.7s" }}
       >
         <span className="uppercase" style={{ fontFamily: FC, fontSize: fs(9), letterSpacing: "0.13em", color: "#B0AFA9" }}>TICKETS</span>
         {bar(180, "rgba(38,38,42,0.5)")}
@@ -612,7 +584,7 @@ function ReworkedCard() {
         <span className="uppercase" style={{ fontFamily: FC, fontSize: fs(9), letterSpacing: "0.13em", color: GREEN }}>LIST</span>
         <p style={{ fontFamily: NR, fontWeight: 400, fontSize: fs(26), lineHeight: "1.26em", color: INK }}>A clear portal for service requests</p>
         <div className="h-px w-full" style={{ background: "rgba(38,38,42,0.12)" }} />
-        <div className="flex gap-3">
+        <div className="flex gap-3 hb-stagger" style={{ ["--t" as string]: "1.6s" }}>
           {tiles.map((t) => (
             <div key={t.label} className="flex-1 flex flex-col gap-2 rounded-lg" style={{ padding: 12, background: `${t.c}12`, border: `1px solid ${t.c}48` }}>
               <span className="rounded-full flex-shrink-0" style={{ width: 16, height: 16, background: `${t.c}D9` }} />

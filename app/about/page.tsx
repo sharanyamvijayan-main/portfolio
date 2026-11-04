@@ -1,15 +1,9 @@
-import { Newsreader } from "next/font/google";
+import { newsreaderHero as newsreader } from "@/lib/fonts";
 import Reveal from "@/components/Reveal";
 import AboutPhoneScroll from "@/components/AboutPhoneScroll";
+import ToolsSlider from "@/components/ToolsSlider";
 
 // Same serif used for the homepage hero and the AbbVie case-study headlines.
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader-hero",
-  display: "swap",
-});
 
 const skills = [
   "Product & UX Design",
@@ -64,6 +58,15 @@ function WhatIDo() {
           </li>
         ))}
       </ul>
+    </>
+  );
+}
+
+function ToolsIUse() {
+  return (
+    <>
+      <span className={`${label} mb-5`}>Tools I use</span>
+      <ToolsSlider />
     </>
   );
 }
@@ -141,6 +144,7 @@ export default function About() {
         >
           <Reveal className={card}><WhoIAm /></Reveal>
           <Reveal className={card}><WhatIDo /></Reveal>
+          <Reveal className={card}><ToolsIUse /></Reveal>
           <Reveal className={card}><Currently /></Reveal>
           <Reveal><Quote /></Reveal>
           <Reveal className="pt-2"><Links /></Reveal>
@@ -168,6 +172,7 @@ export default function About() {
           <div className="space-y-12">
             <Reveal delay={120}><WhoIAm /></Reveal>
             <div><WhatIDo /></div>
+            <div><ToolsIUse /></div>
             <div><Currently /></div>
             <Quote />
             <Links />

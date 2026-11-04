@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Newsreader } from "next/font/google";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { newsreader } from "@/lib/fonts";
+import { navSpring } from "@/lib/motion";
 import Logo from "./Logo";
+import RollingText from "./RollingText";
+import Magnetic from "./Magnetic";
 
 // The phone menu's links use the site's headline serif.
-const newsreader = Newsreader({ subsets: ["latin"], weight: ["400"], display: "swap" });
 import { isDarkHeroPath } from "@/lib/darkHeroPaths";
 
 const links = [
@@ -16,6 +19,19 @@ const links = [
   { href: "/playground", label: "Playground" },
   { href: "/resume", label: "Resume" },
 ];
+
+// Desktop links spring up and away as you scroll down (leaving the logo and
+// "Get in touch"), and spring back in one after another on scroll up, hover or
+// keyboard focus.
+const linkList: Variants = {
+  shown: { transition: { staggerChildren: 0.05 } },
+  hidden: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
+};
+const linkItem: Variants = {
+  shown: { opacity: 1, y: 0, transition: navSpring },
+  hidden: { opacity: 0, y: -14, transition: navSpring },
+};
+const COMPACT_AFTER = 120;
 
 function parseRGB(s: string): [number, number, number, number] | null {
   const m = s.match(/rgba?\(([^)]+)\)/i);
@@ -85,6 +101,35 @@ export default function Nav() {
     };
   }, [pathname]);
 
+  // Compact desktop bar while scrolling down the page.
+  const reduceMotion = useReducedMotion();
+  const [scrolledDown, setScrolledDown] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  useEffect(() => {
+    // Mouse/trackpad only: on a touch tablet the first tap would just spring
+    // the hidden links back open, so there they always stay.
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    let lastY = window.scrollY;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = window.scrollY;
+        if (y < COMPACT_AFTER) setScrolledDown(false);
+        else if (y > lastY + 4) setScrolledDown(true);
+        else if (y < lastY - 4) setScrolledDown(false);
+        lastY = y;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+  const collapsed = scrolledDown && !hovered && !reduceMotion;
+
   // Phone menu (below sm, where the inline links are hidden).
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
@@ -123,6 +168,12 @@ export default function Nav() {
       )}
 
       <nav
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocus={() => setHovered(true)}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setHovered(false);
+        }}
         className={`mx-auto max-w-[1200px] flex items-center justify-between gap-3 sm:gap-4
           pl-4 pr-1.5 py-1.5 rounded-full border backdrop-blur-md transition-colors duration-300 ${phoneBar}
           sm:p-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:backdrop-blur-none`}
@@ -136,11 +187,17 @@ export default function Nav() {
           <Logo dark={isDark} />
         </Link>
 
-        <ul className="hidden sm:flex items-center gap-6 md:gap-8">
+        <motion.ul
+          className="hidden sm:flex items-center gap-6 md:gap-8"
+          initial={false}
+          animate={collapsed ? "hidden" : "shown"}
+          variants={linkList}
+          style={{ pointerEvents: collapsed ? "none" : "auto" }}
+        >
           {links.map(({ href, label }) => {
             const active = href === "/#work" ? pathname === "/" : pathname === href;
             return (
-              <li key={href}>
+              <motion.li key={href} variants={linkItem}>
                 <Link
                   href={href}
                   className={`font-body text-sm font-medium transition-colors duration-300 relative
@@ -150,21 +207,23 @@ export default function Nav() {
                     ${active ? "after:w-full opacity-100" : "opacity-70"}
                   `}
                 >
-                  {label}
+                  <RollingText text={label} />
                 </Link>
-              </li>
+              </motion.li>
             );
           })}
-        </ul>
+        </motion.ul>
 
         <div className="flex items-center gap-1.5">
-          <Link
-            href="/contact"
-            onClick={() => setMenuOpen(false)}
-            className={`font-body text-xs md:text-sm font-semibold px-4 md:px-5 py-2 rounded-full transition-colors duration-300 whitespace-nowrap ${ctaBg}`}
-          >
-            Get in touch
-          </Link>
+          <Magnetic strength={0.25} reach={50}>
+            <Link
+              href="/contact"
+              onClick={() => setMenuOpen(false)}
+              className={`font-body text-xs md:text-sm font-semibold px-4 md:px-5 py-2 rounded-full transition-colors duration-300 whitespace-nowrap ${ctaBg}`}
+            >
+              <RollingText text="Get in touch" />
+            </Link>
+          </Magnetic>
 
           <button
             type="button"

@@ -1,33 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { Newsreader, Roboto, Fira_Code } from "next/font/google";
+import { newsreader, roboto, firaCode } from "@/lib/fonts";
 import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
 import { HeroCanvas } from "@/components/case-study/HeroCanvas";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-roboto",
-  display: "swap",
-});
-
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-fira-code",
-  display: "swap",
-});
 
 const NR = "var(--font-newsreader)";
 const RB = "var(--font-roboto)";
@@ -68,16 +46,21 @@ function Eyebrow({ children, color = BLUE }: { children: string; color?: string 
 // children inside each box are positioned as percentages of that same box.
 
 function ChromeBox({
-  leftPct, topPct, widthPct, style, children,
+  leftPct, topPct, widthPct, enterAt, style, children,
 }: {
   leftPct: number; topPct: number; widthPct: number;
+  /** Seconds after load this card rises in (overrides the hero's default stagger). */
+  enterAt?: number;
   style?: CSSProperties;
   children: ReactNode;
 }) {
   return (
     <div
       className="absolute"
-      style={{ left: `${leftPct}%`, top: `${topPct}%`, width: `${widthPct}%`, containerType: "inline-size" }}
+      style={{
+        left: `${leftPct}%`, top: `${topPct}%`, width: `${widthPct}%`, containerType: "inline-size",
+        ...(enterAt !== undefined && ({ "--d": `${enterAt}s` } as CSSProperties)),
+      }}
     >
       <div className="relative w-full" style={style}>
         {children}
@@ -85,6 +68,9 @@ function ChromeBox({
     </div>
   );
 }
+
+// Start time (seconds after load) for a hero detail animation; see .hb-* in globals.css.
+const t = (s: number) => ({ "--t": `${s}s` }) as CSSProperties;
 
 function ClaudeCodeTerminal() {
   const W = 459.88, H = 231.19;
@@ -102,24 +88,25 @@ function ClaudeCodeTerminal() {
         overflow: "hidden",
       }}
     >
-      <div className="absolute" style={{ left: pct(6.68, W), top: 0, width: pct(453.2, W), height: pct(57.32, H), background: "rgba(255,255,255,0.05)" }} />
-      <span className="absolute rounded-full" style={{ left: pct(25.26, W), top: pct(16.18, H), width: pct(9.34, W), height: pct(9.34, H), background: "#FF5F57" }} />
-      <span className="absolute rounded-full" style={{ left: pct(40.25, W), top: pct(16.76, H), width: pct(9.34, W), height: pct(9.34, H), background: "#FEBC2E" }} />
-      <span className="absolute rounded-full" style={{ left: pct(55.24, W), top: pct(17.33, H), width: pct(9.34, W), height: pct(9.34, H), background: "#28C840" }} />
-      <span className="absolute whitespace-nowrap" style={{ left: pct(79.09, W), top: pct(16.75, H), fontFamily: FC, fontWeight: 500, fontSize: fs(11), color: "#8FA3C8" }}>claude code</span>
-      <span className="absolute whitespace-nowrap" style={{ left: pct(314.91, W), top: pct(26.81, H), fontFamily: FC, fontWeight: 400, fontSize: fs(10), color: "#4E6693" }}>unity · design-system</span>
+      {/* Title bar: full width of the window; dots and both labels share one centre line. */}
+      <div className="absolute" style={{ left: 0, top: 0, width: "100%", height: pct(57.32, H), background: "rgba(255,255,255,0.05)" }} />
+      <span className="absolute rounded-full" style={{ left: pct(25.26, W), top: pct(23.99, H), width: pct(9.34, W), height: pct(9.34, H), background: "#FF5F57" }} />
+      <span className="absolute rounded-full" style={{ left: pct(40.25, W), top: pct(23.99, H), width: pct(9.34, W), height: pct(9.34, H), background: "#FEBC2E" }} />
+      <span className="absolute rounded-full" style={{ left: pct(55.24, W), top: pct(23.99, H), width: pct(9.34, W), height: pct(9.34, H), background: "#28C840" }} />
+      <span className="absolute whitespace-nowrap" style={{ left: pct(79.09, W), top: pct(28.66, H), translate: "0 -50%", lineHeight: 1, fontFamily: FC, fontWeight: 500, fontSize: fs(11), color: "#8FA3C8" }}>claude code</span>
+      <span className="absolute whitespace-nowrap" style={{ right: pct(18, W), top: pct(28.66, H), translate: "0 -50%", lineHeight: 1, fontFamily: FC, fontWeight: 400, fontSize: fs(10), color: "#4E6693" }}>unity · design-system</span>
 
-      <span className="absolute" style={{ left: pct(23.44, W), top: pct(56.65, H), fontFamily: FC, fontWeight: 500, fontSize: fs(12), color: "#5EEAD4" }}>&rsaquo;</span>
-      <span className="absolute whitespace-nowrap" style={{ left: pct(39.43, W), top: pct(57.26, H), fontFamily: FC, fontWeight: 400, fontSize: fs(12), color: "#E6EDFA" }}>audit the hub IA — 80 pages</span>
+      <span className="absolute hb-fade" style={{ ...t(1.1), left: pct(22, W), top: pct(57.26, H), fontFamily: FC, fontWeight: 500, fontSize: fs(12), color: "#5EEAD4" }}>&rsaquo;</span>
+      <span className="absolute whitespace-nowrap hb-type" style={{ ...t(1.2), left: pct(38, W), top: pct(57.26, H), fontFamily: FC, fontWeight: 400, fontSize: fs(12), color: "#E6EDFA" }}>audit the hub IA — 80 pages</span>
 
-      <span className="absolute whitespace-nowrap" style={{ left: pct(38.43, W), top: pct(83.25, H), fontFamily: FC, fontWeight: 400, fontSize: fs(12), color: "#8FA3C8" }}>reading 80 pages…  triaging</span>
-      <span className="absolute whitespace-nowrap" style={{ left: pct(37.43, W), top: pct(109.23, H), fontFamily: FC, fontWeight: 400, fontSize: fs(12), color: "#8FA3C8" }}>keep 31 · revise 24 · archive 25</span>
+      <span className="absolute whitespace-nowrap hb-type" style={{ ...t(2.1), left: pct(38, W), top: pct(83.25, H), fontFamily: FC, fontWeight: 400, fontSize: fs(12), color: "#8FA3C8" }}>reading 80 pages…  triaging</span>
+      <span className="absolute whitespace-nowrap hb-type" style={{ ...t(2.7), left: pct(38, W), top: pct(109.23, H), fontFamily: FC, fontWeight: 400, fontSize: fs(12), color: "#8FA3C8" }}>keep 31 · revise 24 · archive 25</span>
 
-      <span className="absolute" style={{ left: pct(20.44, W), top: pct(134.59, H), fontFamily: FC, fontWeight: 500, fontSize: fs(12), color: "#5EEAD4" }}>&rsaquo;</span>
-      <span className="absolute whitespace-nowrap" style={{ left: pct(36.43, W), top: pct(135.21, H), fontFamily: FC, fontWeight: 400, fontSize: fs(12), color: "#E6EDFA" }}>compare 3 process shapes</span>
+      <span className="absolute hb-fade" style={{ ...t(3.4), left: pct(22, W), top: pct(135.21, H), fontFamily: FC, fontWeight: 500, fontSize: fs(12), color: "#5EEAD4" }}>&rsaquo;</span>
+      <span className="absolute whitespace-nowrap hb-type" style={{ ...t(3.5), left: pct(38, W), top: pct(135.21, H), fontFamily: FC, fontWeight: 400, fontSize: fs(12), color: "#E6EDFA" }}>compare 3 process shapes</span>
 
-      <span className="absolute" style={{ left: pct(35.43, W), top: pct(162.19, H), width: pct(7.57, W), height: pct(15.26, H), background: "rgba(94,234,212,0.9)" }} />
-      <span className="absolute" style={{ left: pct(19.45, W), top: pct(160.57, H), fontFamily: FC, fontWeight: 500, fontSize: fs(12), color: "#5EEAD4" }}>&rsaquo;</span>
+      <span className="absolute hb-blink" style={{ ...t(4.2), left: pct(38, W), top: pct(162.19, H), width: pct(7.57, W), height: pct(15.26, H), background: "rgba(94,234,212,0.9)" }} />
+      <span className="absolute hb-fade" style={{ ...t(4.2), left: pct(22, W), top: pct(161.19, H), fontFamily: FC, fontWeight: 500, fontSize: fs(12), color: "#5EEAD4" }}>&rsaquo;</span>
     </ChromeBox>
   );
 }
@@ -139,7 +126,7 @@ function FigmaMcpStatus() {
         overflow: "hidden",
       }}
     >
-      <span className="absolute rounded-full" style={{ left: pct(23.03, W), top: pct(37.21, H), width: pct(8.33, W), height: pct(8.33, H), background: "#12A16E" }} />
+      <span className="absolute rounded-full hb-ping" style={{ ...t(1.4), left: pct(23.03, W), top: pct(37.21, H), width: pct(8.33, W), height: pct(8.33, H), background: "#12A16E" }} />
       <span className="absolute rounded-full" style={{ left: pct(17.82, W), top: pct(32, H), width: pct(18.74, W), height: pct(18.74, H), border: "1.5px solid rgba(18,161,110,0.3)" }} />
       <span className="absolute uppercase whitespace-nowrap" style={{ left: pct(44.92, W), top: pct(29.81, H), fontFamily: RB, fontWeight: 500, fontSize: fs(12), letterSpacing: "0.1083em", color: "#12A16E" }}>MCP CONNECTED</span>
       <span className="absolute whitespace-nowrap" style={{ left: pct(23.99, W), top: pct(55.54, H), fontFamily: RB, fontWeight: 500, fontSize: fs(17), color: "#1C1C1A" }}>Figma &nbsp;⇄&nbsp; code</span>
@@ -176,7 +163,7 @@ function Toast() {
   const fs = (px: number) => `${(px / W) * 100}cqw`;
   return (
     <ChromeBox
-      leftPct={64.375} topPct={70.9622} widthPct={28.1410}
+      leftPct={64.375} topPct={70.9622} widthPct={28.1410} enterAt={4}
       style={{
         aspectRatio: `${W} / ${H}`,
         background: "rgba(4,16,46,0.62)",
@@ -186,7 +173,7 @@ function Toast() {
         overflow: "hidden",
       }}
     >
-      <span className="absolute rounded-full flex items-center justify-center" style={{ left: pct(18.45, W), top: pct(26.31, H), width: pct(22.38, W), height: pct(22.38, H), background: "rgba(18,161,110,0.9)" }}>
+      <span className="absolute rounded-full flex items-center justify-center hb-pop" style={{ ...t(4.6), left: pct(18.45, W), top: pct(26.31, H), width: pct(22.38, W), height: pct(22.38, H), background: "rgba(18,161,110,0.9)" }}>
         <span style={{ fontFamily: RB, fontWeight: 500, fontSize: fs(11), color: "#FFFFFF" }}>✓</span>
       </span>
       <span className="absolute uppercase whitespace-nowrap" style={{ left: pct(50.73, W), top: pct(20.87, H), fontFamily: RB, fontWeight: 500, fontSize: fs(10), letterSpacing: "0.14em", color: "#5EEAD4" }}>DESIGN SYSTEM</span>

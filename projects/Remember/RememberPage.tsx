@@ -1,25 +1,10 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { Newsreader, Roboto } from "next/font/google";
+import { newsreader, roboto } from "@/lib/fonts";
 import { MoreProjects } from "@/components/case-study/MoreProjects";
 import Reveal from "@/components/Reveal";
 import { CaseStudyNav } from "./CaseStudyNav";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-roboto",
-  display: "swap",
-});
 
 const PF = "var(--font-newsreader)";
 const RB = "var(--font-roboto)";

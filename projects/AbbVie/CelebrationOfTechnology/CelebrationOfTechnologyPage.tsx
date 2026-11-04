@@ -1,44 +1,17 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { Newsreader, Roboto, Fira_Code, Space_Grotesk } from "next/font/google";
+import { newsreader, roboto, firaCode, spaceGrotesk } from "@/lib/fonts";
 import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
 import CountUp from "@/components/CountUp";
+import { HeroDayTabs } from "./HeroDayTabs";
 import { HeroCanvas } from "@/components/case-study/HeroCanvas";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-roboto",
-  display: "swap",
-});
-
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-fira-code",
-  display: "swap",
-});
 
 // F37 Lineca is a licensed foundry font used in the source Figma file and
 // isn't available to load here. Space Grotesk is a much closer stand-in
 // than a plain system sans — a similar bold geometric grotesk — wherever
 // the design calls for Lineca.
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "700"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
 
 const NR = "var(--font-newsreader)";
 const RB = "var(--font-roboto)";
@@ -168,32 +141,9 @@ function UnityStickyNav() {
 }
 
 function UnityDayTabs() {
-  const days = [
-    { label: "Day 1", active: false },
-    { label: "Day 2", active: true },
-    { label: "Day 3", active: false },
-    { label: "Day 4", active: false },
-  ];
   return (
     <HeroBox leftPct={12.146} topPct={66.471}>
-      <div
-        className="flex items-center rounded-xl"
-        style={{ padding: 5, gap: 4, background: "rgba(255,255,255,0.16)", border: "1px solid rgba(255,255,255,0.28)" }}
-      >
-        {days.map((d) => (
-          <span
-            key={d.label}
-            className="rounded-lg"
-            style={{
-              padding: "10px 17px", fontFamily: RB, fontWeight: 500, fontSize: 13,
-              background: d.active ? "#FFFFFF" : "transparent",
-              color: d.active ? BLUE_DARK : "rgba(255,255,255,0.82)",
-            }}
-          >
-            {d.label}
-          </span>
-        ))}
-      </div>
+      <HeroDayTabs fontFamily={RB} activeColor={BLUE_DARK} />
     </HeroBox>
   );
 }
@@ -208,7 +158,7 @@ function UnityHappeningNowCard() {
         style={{ padding: "20px 24px", gap: 14, boxShadow: "0px 22px 48px 0px rgba(3,15,51,0.26)" }}
       >
         <div className="flex items-center gap-2">
-          <span className="rounded-full flex-shrink-0" style={{ width: 8.3, height: 8.3, background: GREEN }} />
+          <span className="rounded-full flex-shrink-0 hb-ping" style={{ width: 8.3, height: 8.3, background: GREEN, ["--pc" as string]: GREEN, ["--t" as string]: "1.2s" }} />
           <span style={{ fontFamily: RB, fontWeight: 500, fontSize: fs(10), letterSpacing: "0.14em", color: GREEN, whiteSpace: "nowrap" }}>HAPPENING NOW</span>
           <span className="flex-1" />
           <span style={{ fontFamily: FC, fontSize: fs(10.5), color: "#A8A8A2", whiteSpace: "nowrap" }}>10:30 AM – 11:15 AM</span>
@@ -262,7 +212,7 @@ function UnityDieCutSticker() {
         }}
       >
         <span
-          className="absolute rounded-full"
+          className="absolute rounded-full hb-spin"
           style={{ left: pct(13.02), top: pct(13.02), width: pct(130.16), height: pct(130.16), border: "1.16px dashed rgba(0,180,245,0.5)" }}
         />
         <div className="text-center px-[8%]">
@@ -282,10 +232,11 @@ function UnityDieCutSticker() {
   );
 }
 
-function UnityStatItem({ value, label }: { value: string; label: string }) {
+// The stats band is the last card to rise into the hero, so its count waits for it.
+function UnityStatItem({ value, suffix, label }: { value: number; suffix?: string; label: string }) {
   return (
     <div className="flex flex-col items-center gap-[3px]">
-      <span style={{ fontFamily: LINECA, fontWeight: 1000, fontSize: 26, color: "#FFFFFF" }}>{value}</span>
+      <CountUp to={value} suffix={suffix} delay={1300} style={{ fontFamily: LINECA, fontWeight: 1000, fontSize: 26, color: "#FFFFFF" }} />
       <span style={{ fontFamily: RB, fontWeight: 400, fontSize: 11, color: "rgba(255,255,255,0.68)" }}>{label}</span>
     </div>
   );
@@ -298,11 +249,11 @@ function UnityStatsBand() {
         className="flex items-center rounded-xl"
         style={{ padding: "16px 24px", gap: 30, background: "rgba(255,255,255,0.13)", border: "1px solid rgba(255,255,255,0.24)" }}
       >
-        <UnityStatItem value="4" label="days" />
+        <UnityStatItem value={4} label="days" />
         <span style={{ width: 1.83, height: 34, background: "rgba(255,255,255,0.2)" }} />
-        <UnityStatItem value="40+" label="speakers" />
+        <UnityStatItem value={40} suffix="+" label="speakers" />
         <span style={{ width: 1.83, height: 34, background: "rgba(255,255,255,0.2)" }} />
-        <UnityStatItem value="3" label="conferences" />
+        <UnityStatItem value={3} label="conferences" />
       </div>
     </HeroBox>
   );

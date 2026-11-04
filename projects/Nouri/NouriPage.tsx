@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { Newsreader, Roboto, Fira_Code } from "next/font/google";
+import { newsreader, roboto, firaCode } from "@/lib/fonts";
 import { CaseStudyNav } from "./CaseStudyNav";
 import { ProblemSolutionsScrolly, type ProblemSolutionItem } from "./ProblemSolutionsScrolly";
 import Reveal from "@/components/Reveal";
@@ -9,27 +9,6 @@ import ScrollMotion from "@/components/case-study/ScrollMotion";
 
 // Same editorial type system as the AbbVie case studies:
 // Newsreader (serif headings) · Roboto (body / eyebrows) · Fira Code (numerals).
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-roboto",
-  display: "swap",
-});
-
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-fira-code",
-  display: "swap",
-});
 
 const NR = "var(--font-newsreader)"; // serif — headings
 const RB = "var(--font-roboto)";     // body / eyebrows / labels

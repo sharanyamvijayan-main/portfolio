@@ -28,6 +28,15 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis (components/SmoothScroll.tsx) does the smoothing on desktop; native
+   smooth scrolling on top of it would fight it. Phones keep the native one. */
+html.lenis {
+  scroll-behavior: auto;
+}
+html.lenis, html.lenis body {
+  height: auto;
+}
+
 body {
   background: #FFFFFF;
   color: #191919;
@@ -479,3 +488,296 @@ html.splash-active:not(.splash-leaving) .animate-fade-in {
 .m-left.m-hide { transform: translate3d(-48px, 0, 0); }
 .m-right.m-hide { transform: translate3d(48px, 0, 0); }
 .m-zoom.m-hide { transform: scale(0.965); }
+
+/* ── AbbVie hero banner motion (components/case-study/HeroCanvas.tsx) ──
+   Uses the individual `translate` / `scale` / `rotate` properties so it
+   composes with any transform an element already has. */
+@keyframes hbIn {
+  from { opacity: 0; translate: 0 26px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes hbFloat {
+  from { translate: 0 0; }
+  to { translate: 0 -7px; }
+}
+@keyframes hbBreathe {
+  from { opacity: 0.75; scale: 1; }
+  to { opacity: 1; scale: 1.08; }
+}
+@keyframes hbFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes hbType {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes hbBlink { 50% { opacity: 0; } }
+@keyframes hbPing {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pc, #12A16E) 60%, transparent); }
+  80%, 100% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--pc, #12A16E) 0%, transparent); }
+}
+@keyframes hbSpin { to { rotate: 360deg; } }
+@keyframes hbGrow {
+  from { scale: 0 1; opacity: 0; }
+  to { scale: 1 1; opacity: 1; }
+}
+@keyframes hbPop {
+  0% { scale: 0.6; opacity: 0; }
+  70% { scale: 1.06; opacity: 1; }
+  100% { scale: 1; opacity: 1; }
+}
+
+/* Cards rise in one after another, then drift. Glows just breathe. */
+.hb > * {
+  --d: 0.15s;
+  animation:
+    hbIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--d) both,
+    hbFloat var(--fd, 6.5s) ease-in-out calc(var(--d) + 0.9s) infinite alternate;
+}
+.hb > .pointer-events-none {
+  animation: hbBreathe 7s ease-in-out infinite alternate;
+}
+.hb > :nth-child(2) { --d: 0.2s; --fd: 7.5s; }
+.hb > :nth-child(3) { --d: 0.3s; --fd: 6s; }
+.hb > :nth-child(4) { --d: 0.42s; --fd: 7s; }
+.hb > :nth-child(5) { --d: 0.54s; --fd: 5.8s; }
+.hb > :nth-child(6) { --d: 0.66s; --fd: 6.8s; }
+.hb > :nth-child(7) { --d: 0.78s; --fd: 6.2s; }
+.hb > :nth-child(8) { --d: 0.9s; --fd: 7.2s; }
+.hb > :nth-child(9) { --d: 1.02s; --fd: 6.4s; }
+.hb > :nth-child(n + 10) { --d: 1.14s; }
+
+/* Opt-in details, timed with --t (seconds after load). */
+.hb-type { animation: hbType 0.7s steps(26, end) var(--t, 0s) both; }
+.hb-fade { animation: hbFade 0.4s ease var(--t, 0s) both; }
+.hb-blink { animation: hbFade 0.2s var(--t, 0s) both, hbBlink 1.05s steps(1) calc(var(--t, 0s) + 0.2s) infinite; }
+.hb-ping { animation: hbPing 2.2s ease-out var(--t, 1s) infinite; }
+.hb-spin { animation: hbSpin 26s linear infinite; }
+.hb-pop { animation: hbPop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) var(--t, 0s) both; }
+/* Children of .hb-grow draw in left to right; .hb-stagger children rise in. */
+.hb-grow > * { transform-origin: left center; animation: hbGrow 0.5s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--t, 0.6s) + var(--n, 0) * 70ms) both; }
+.hb-stagger > * { animation: hbIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--t, 0.6s) + var(--n, 0) * 110ms) both; }
+.hb-grow > :nth-child(2), .hb-stagger > :nth-child(2) { --n: 1; }
+.hb-grow > :nth-child(3), .hb-stagger > :nth-child(3) { --n: 2; }
+.hb-grow > :nth-child(4), .hb-stagger > :nth-child(4) { --n: 3; }
+.hb-grow > :nth-child(5), .hb-stagger > :nth-child(5) { --n: 4; }
+.hb-grow > :nth-child(6), .hb-stagger > :nth-child(6) { --n: 5; }
+.hb-grow > :nth-child(7), .hb-stagger > :nth-child(7) { --n: 6; }
+.hb-grow > :nth-child(8), .hb-stagger > :nth-child(8) { --n: 7; }
+.hb-grow > :nth-child(9), .hb-stagger > :nth-child(9) { --n: 8; }
+.hb-grow > :nth-child(n + 10), .hb-stagger > :nth-child(n + 10) { --n: 9; }
+
+/* HeroLoop restarts the banner by switching its animations off for a frame:
+   everything when you scroll back to it, just the details on its timed loop. */
+.hb.hb-reset > *,
+.hb.hb-reset .hb-type,
+.hb.hb-reset .hb-fade,
+.hb.hb-reset .hb-blink,
+.hb.hb-reset .hb-pop,
+.hb.hb-reset .hb-grow > *,
+.hb.hb-reset .hb-stagger > *,
+.hb.hb-reset-details .hb-type,
+.hb.hb-reset-details .hb-fade,
+.hb.hb-reset-details .hb-blink,
+.hb.hb-reset-details .hb-pop,
+.hb.hb-reset-details .hb-grow > *,
+.hb.hb-reset-details .hb-stagger > * {
+  animation: none;
+}
+
+/* Like the homepage entrances, hold the banner until the intro splash fades. */
+html.splash-active:not(.splash-leaving) .hb > *,
+html.splash-active:not(.splash-leaving) .hb-type,
+html.splash-active:not(.splash-leaving) .hb-fade,
+html.splash-active:not(.splash-leaving) .hb-blink,
+html.splash-active:not(.splash-leaving) .hb-ping,
+html.splash-active:not(.splash-leaving) .hb-pop,
+html.splash-active:not(.splash-leaving) .hb-grow > *,
+html.splash-active:not(.splash-leaving) .hb-stagger > * {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb > *, .hb > .pointer-events-none, .hb-type, .hb-fade, .hb-blink, .hb-ping,
+  .hb-spin, .hb-pop, .hb-grow > *, .hb-stagger > * {
+    animation: none;
+  }
+}
+
+/* ── Homepage tools orbit (components/ToolsOrbit.tsx) ──
+   Each ring spins about the stage centre; each tool sits at angle --a on
+   radius --r and spins the opposite way at the same rate, so it stays upright. */
+@keyframes orbitSpin {
+  to { rotate: 360deg; }
+}
+.orbit-stage { container-type: inline-size; }
+.orbit-ring {
+  --dur: 80s;
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: orbitSpin var(--dur) linear infinite;
+  /* The rings are full-size layers stacked on each other; let the pointer
+     through to whichever ring's tools are under it. */
+  pointer-events: none;
+}
+.orbit-ring--reverse { --dur: 110s; animation-direction: reverse; }
+.orbit-slot {
+  pointer-events: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a)));
+}
+.orbit-upright {
+  translate: -50% -50%;
+  animation: orbitSpin var(--dur) linear infinite reverse;
+}
+.orbit-ring--reverse .orbit-upright { animation-direction: normal; }
+.orbit-stage:hover .orbit-ring,
+.orbit-stage:hover .orbit-upright {
+  animation-play-state: paused;
+}
+
+/* ── Homepage headline: colour flowing through "stories worth experiencing" ──
+   One period of the gradient is 3× the text box; shifting by -150% moves it
+   exactly one period, so the loop is seamless. Every blend passes through
+   indigo, so pink and green never mix into brown. */
+@keyframes textFlow {
+  to { background-position: -150% 0; }
+}
+.text-flow {
+  color: #2708A0;
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .text-flow {
+    background-image: linear-gradient(90deg, #2708A0, #DD0369, #2708A0, #09814A, #2708A0);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    color: transparent;
+    animation: textFlow 10s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring, .orbit-upright, .text-flow { animation: none; }
+}
+
+/* ── Back to top (components/BackToTop.tsx) ── */
+.back-to-top {
+  opacity: 0;
+  translate: 0 14px;
+  scale: 0.85;
+  pointer-events: none;
+  transition: opacity 0.35s ease, translate 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.back-to-top.is-shown {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  pointer-events: auto;
+}
+.back-to-top.is-shown:hover { scale: 1.08; }
+.back-to-top.is-shown:active { scale: 0.94; }
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top { transition: opacity 0.2s ease; translate: none; scale: none; }
+}
+
+/* ── Rolling-letter hover text (components/RollingText.tsx) ──
+   Each letter carries its copy one line below (::after); on hover of the
+   link or button around it, every letter slides up a line, staggered by
+   position across 35% of the 0.5s roll. */
+.rolling { display: inline-block; }
+.rolling__text {
+  display: inline-flex;
+  overflow: hidden;
+  vertical-align: top;
+}
+.rolling__letter {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+  transition-delay: calc(0.5s * 0.35 * var(--i) / var(--n));
+}
+.rolling__letter::after {
+  content: attr(data-ch);
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
+a:hover .rolling__letter,
+a:focus-visible .rolling__letter,
+button:hover .rolling__letter,
+button:focus-visible .rolling__letter {
+  transform: translateY(-100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .rolling__letter { transition: none; }
+  a:hover .rolling__letter,
+  a:focus-visible .rolling__letter,
+  button:hover .rolling__letter,
+  button:focus-visible .rolling__letter { transform: none; }
+}
+
+/* ── Footer face (components/home/FollowingEyes.tsx) ──
+   Dot eyes drift (inline translate) and blink; on hover they swap for a
+   happy squint, the smile widens and the face hops. */
+.friendly-face { overflow: visible; transition: translate 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.friendly-face__eyes { transition: translate 0.25s ease-out; }
+.friendly-face__eye { transition: transform 0.08s ease-in; }
+.friendly-face__eyes.is-blinking .friendly-face__eye { transform: scaleY(0.12); }
+.friendly-face__happy, .friendly-face__grin { opacity: 0; transition: opacity 0.15s ease; }
+.friendly-face__eyes, .friendly-face__smile { transition: opacity 0.15s ease, translate 0.25s ease-out; }
+.friendly-face:hover { translate: 0 -4px; }
+.friendly-face:hover .friendly-face__eyes, .friendly-face:hover .friendly-face__smile { opacity: 0; }
+.friendly-face:hover .friendly-face__happy, .friendly-face:hover .friendly-face__grin { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .friendly-face, .friendly-face:hover { transition: none; translate: none; }
+}
+
+/* ── Hero colour field follows the cursor (components/home/HeroField.tsx) ──
+   On top of each blob's own drift (transform), glide toward the cursor by its
+   --depth; --mx / --my run -0.5..0.5 across the hero. */
+.hero-field .hero-blob {
+  translate: calc(var(--mx, 0) * 260px * var(--depth, 1)) calc(var(--my, 0) * 180px * var(--depth, 1));
+  transition: translate 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Typed roles caret (components/home/TypedRoles.tsx) ── */
+@keyframes typedCaret { 50% { opacity: 0; } }
+.typed-caret {
+  margin-left: 1px;
+  color: #2708A0;
+  animation: typedCaret 1s steps(1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .typed-caret { animation: none; }
+}
+
+/* ── About page tools slider (components/ToolsSlider.tsx) ── */
+@keyframes toolsSlide {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.tools-slider__row {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.tools-slider__track {
+  animation: toolsSlide 32s linear infinite;
+}
+.tools-slider__track--reverse {
+  animation-direction: reverse;
+  animation-duration: 38s;
+}
+.tools-slider:hover .tools-slider__track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tools-slider__row { -webkit-mask-image: none; mask-image: none; }
+  .tools-slider__track { animation: none; width: auto; }
+  .tools-slider__set { flex-wrap: wrap; padding-right: 0; }
+  .tools-slider__set[aria-hidden] { display: none; }
+}

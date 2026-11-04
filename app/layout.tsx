@@ -1,22 +1,12 @@
 import type { Metadata } from "next";
-import { Syne, Inter } from "next/font/google";
+import { syne, inter } from "@/lib/fonts";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import CustomCursor from "@/components/CustomCursor";
 import Splash from "@/components/Splash";
+import SmoothScroll from "@/components/SmoothScroll";
+import BackToTop from "@/components/BackToTop";
 import { SPLASH_KEY } from "@/lib/splash";
-
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-});
 
 export const metadata: Metadata = {
   title: "Sharanya Vijayan — UX & Product Designer",
@@ -47,8 +37,10 @@ export default function RootLayout({
       <body>
         <Splash />
         <CustomCursor />
+        <SmoothScroll />
         <Nav />
         {children}
+        <BackToTop />
       </body>
     </html>
   );

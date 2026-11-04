@@ -1,16 +1,9 @@
 "use client";
 
-import { Newsreader } from "next/font/google";
+import { newsreaderHero as newsreader } from "@/lib/fonts";
 import Reveal from "@/components/Reveal";
 
 // Same serif used across the case studies, About, Resume, and Playground pages.
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader-hero",
-  display: "swap",
-});
 
 const contacts = [
   {

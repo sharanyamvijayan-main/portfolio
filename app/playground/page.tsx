@@ -1,22 +1,9 @@
 import Link from "next/link";
-import { Newsreader, Roboto } from "next/font/google";
+import { newsreader, roboto } from "@/lib/fonts";
 import Reveal from "@/components/Reveal";
 
 // Same type system as the AbbVie case studies and the Arco / Oblique Vase
 // coming-soon pages — Newsreader headline, Roboto eyebrow / body / link.
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-roboto",
-  display: "swap",
-});
 
 const INK = "#26262A";
 const BODY = "#4A4A46";
