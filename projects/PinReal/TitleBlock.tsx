@@ -3,10 +3,11 @@
 // design's own; only the headline size and the meta row adapt below 1168px.
 import { title } from "./assets";
 import { ScaledCanvas } from "./shared";
+import ToolBadges from "@/components/case-study/ToolBadges";
 
 function MetaCol({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="[word-break:break-word] content-stretch flex flex-col gap-[9px] items-start overflow-clip relative shrink-0 w-[240px] max-w-full">
+    <div className="[word-break:break-word] content-stretch flex flex-col gap-[9px] items-start relative shrink-0 w-[240px] max-w-full">
       <p className="pr-roboto font-medium leading-[normal] relative shrink-0 text-[#e60023] text-[10px] tracking-[1.5px] w-full">{label}</p>
       {children}
     </div>
@@ -64,7 +65,7 @@ export function TitleBlock() {
 
       <div className="bg-[rgba(38,38,42,0.14)] h-px relative shrink-0 w-full" />
 
-      <div className="content-stretch flex flex-wrap gap-x-[24px] gap-y-[24px] items-start justify-between overflow-clip relative shrink-0 w-full">
+      <div className="content-stretch flex flex-wrap gap-x-[24px] gap-y-[24px] items-start justify-between relative shrink-0 w-full">
         <MetaCol label="PROJECT">
           <p className={metaValue}>UI Concept &amp; Visual Exploration</p>
         </MetaCol>
@@ -75,14 +76,7 @@ export function TitleBlock() {
           <p className={metaValue}>Nov - 2024</p>
         </MetaCol>
         <MetaCol label="TOOLS">
-          <div className="content-stretch flex gap-[12px] items-center overflow-clip relative shrink-0">
-            <div className="h-[24px] relative shrink-0 w-[16.58px]">
-              <img alt="Figma" className="absolute block inset-0 max-w-none size-full" src={title.FigmaLogo} />
-            </div>
-            <div className="relative shrink-0 size-[24px]">
-              <img alt="Miro" className="absolute block inset-0 max-w-none size-full" src={title.MiroMiroIcon01} />
-            </div>
-          </div>
+          <ToolBadges tools={["Figma", "Miro"]} />
         </MetaCol>
       </div>
 

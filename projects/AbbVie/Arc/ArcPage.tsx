@@ -5,6 +5,7 @@ import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
 import { HeroCanvas } from "@/components/case-study/HeroCanvas";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
+import ToolBadges from "@/components/case-study/ToolBadges";
 
 // Space Grotesk stands in for the hero's giant display moments — matches
 // the treatment used on the other AbbVie sub-pages.
@@ -674,8 +675,8 @@ function TitleMeta() {
           <p style={{ fontFamily: RB, fontSize: 13, lineHeight: "1.58em", color: META }}>Two days</p>
         </div>
         <div style={{ flex: "1 1 190px" }}>
-          <p className="mb-2.5" style={{ fontFamily: RB, fontWeight: 500, fontSize: 10, letterSpacing: "0.15em", color: LAVENDER }}>BUILT WITH</p>
-          <p style={{ fontFamily: RB, fontSize: 13, lineHeight: "1.58em", color: META }}>Figma, then the internal<br />React design system</p>
+          <p className="mb-2.5" style={{ fontFamily: RB, fontWeight: 500, fontSize: 10, letterSpacing: "0.15em", color: LAVENDER }}>TOOLS</p>
+          <ToolBadges tools={[{ name: "Figma", label: "Figma · designed first" }, { name: "React", label: "React · then the internal design system" }]} />
         </div>
       </div>
     </div>

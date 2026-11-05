@@ -7,6 +7,7 @@ import CountUp from "@/components/CountUp";
 import { HeroDayTabs } from "./HeroDayTabs";
 import { HeroCanvas } from "@/components/case-study/HeroCanvas";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
+import ToolBadges from "@/components/case-study/ToolBadges";
 
 // F37 Lineca is a licensed foundry font used in the source Figma file and
 // isn't available to load here. Space Grotesk is a much closer stand-in
@@ -322,9 +323,13 @@ function TitleMeta() {
         </div>
         <div style={{ flex: "1 1 200px" }}>
           <p className="mb-2.5" style={{ fontFamily: RB, fontWeight: 500, fontSize: 10, letterSpacing: "0.15em", color: BLUE }}>TOOLS</p>
-          <p style={{ fontFamily: RB, fontSize: 13, lineHeight: "1.58em", color: META }}>
-            Figma Make for first passes<br />Figma for iteration<br />React on the internal<br />design system
-          </p>
+          <ToolBadges
+            tools={[
+              { name: "Figma Make", label: "Figma Make · first passes" },
+              { name: "Figma", label: "Figma · iteration" },
+              { name: "React", label: "React · internal design system" },
+            ]}
+          />
         </div>
       </div>
     </div>

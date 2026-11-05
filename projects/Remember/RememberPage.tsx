@@ -5,6 +5,7 @@ import { MoreProjects } from "@/components/case-study/MoreProjects";
 import Reveal from "@/components/Reveal";
 import { CaseStudyNav } from "./CaseStudyNav";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
+import ToolBadges from "@/components/case-study/ToolBadges";
 
 const PF = "var(--font-newsreader)";
 const RB = "var(--font-roboto)";
@@ -284,11 +285,7 @@ export default function Remember() {
         </div>
         <div>
           <p className="uppercase mb-3" style={{ fontFamily: RB, fontWeight: 700, fontSize: 10, letterSpacing: "0.16em", color: META }}>TOOLS</p>
-          <div className="flex flex-wrap gap-2">
-            {["Figma", "Figma Make", "Gemini"].map((t) => (
-              <span key={t} className="rounded-full" style={{ padding: "6px 16px", background: "#FFFFFF", border: `1px solid ${CARD_BORDER}`, fontFamily: RB, fontSize: 12, color: INK }}>{t}</span>
-            ))}
-          </div>
+          <ToolBadges tools={["Figma", "Figma Make", "Gemini"]} />
         </div>
       </div>
 

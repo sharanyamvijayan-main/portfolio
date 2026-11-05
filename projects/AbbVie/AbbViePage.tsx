@@ -3,9 +3,12 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { newsreader, roboto, firaCode } from "@/lib/fonts";
 import { CaseStudyNav } from "./CaseStudyNav";
+import DoubleDiamond from "./DoubleDiamond";
+import JumpToCaseStudy from "./JumpToCaseStudy";
 import Reveal from "@/components/Reveal";
 import { HeroCanvas } from "@/components/case-study/HeroCanvas";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
+import ToolBadges from "@/components/case-study/ToolBadges";
 
 const NR = "var(--font-newsreader)";
 const RB = "var(--font-roboto)";
@@ -263,9 +266,7 @@ function TitleMeta() {
         </div>
         <div style={{ width: 258 }}>
           <p className="mb-2.5" style={{ ...eyebrowStyle, color: BLUE }}>TOOLS</p>
-          <p style={{ fontFamily: RB, fontWeight: 400, fontSize: 13, lineHeight: "1.58em", color: META }}>Claude Code &middot; Figma MCP</p>
-          <p style={{ fontFamily: RB, fontWeight: 400, fontSize: 13, lineHeight: "1.58em", color: META }}>Figma &middot; Figma Make</p>
-          <p style={{ fontFamily: RB, fontWeight: 400, fontSize: 13, lineHeight: "1.58em", color: META }}>React + TypeScript</p>
+          <ToolBadges tools={["Claude Code", { name: "Figma", label: "Figma · Figma MCP" }, "Figma Make", "React", "TypeScript"]} />
         </div>
       </div>
     </div>
@@ -274,46 +275,10 @@ function TitleMeta() {
 
 // ─── Jump to a case study ───────────────────────────────────────────────
 const jumpChips = [
-  { href: "#proj-celebration", label: "Celebration of Technology", bg: BLUE },
-  { href: "#proj-arc", label: "ARC", bg: LAVENDER },
-  { href: "#proj-ai-hub", label: "AI Learning Hub", bg: TEAL },
+  { href: "#proj-celebration", label: "Celebration of Technology", short: "Celebration of Tech", tiny: "Celebration", bg: BLUE },
+  { href: "#proj-arc", label: "ARC", short: "ARC", bg: LAVENDER },
+  { href: "#proj-ai-hub", label: "AI Learning Hub", short: "AI Hub", bg: TEAL },
 ];
-
-// The label sits above the chips until there's room for a single row (xl);
-// the chips wrap rather than overflowing the card at in-between widths.
-function JumpBar() {
-  return (
-    <div
-      className="flex flex-col xl:flex-row xl:items-center gap-4 xl:gap-6 rounded-2xl px-5 py-4"
-      style={{ background: "#FFFFFF", border: "1px solid #E4E4DE", boxShadow: "0px 3px 12px 0px rgba(38,38,42,0.09)" }}
-    >
-      <div className="flex items-center gap-2.5 flex-shrink-0">
-        <div className="flex flex-col gap-[3px]">
-          <span className="block rounded-full" style={{ width: 15, height: 1.5, background: "rgba(38,38,42,0.8)" }} />
-          <span className="block rounded-full" style={{ width: 15, height: 1.5, background: "rgba(38,38,42,0.8)" }} />
-          <span className="block rounded-full" style={{ width: 10, height: 1.5, background: "rgba(38,38,42,0.8)" }} />
-        </div>
-        <span style={{ fontFamily: RB, fontWeight: 500, fontSize: 13, color: INK }}>Jump to a case study</span>
-      </div>
-      <div className="flex flex-wrap items-center gap-3 flex-1 min-w-0">
-        {jumpChips.map((c) => (
-          <a
-            key={c.label}
-            href={c.href}
-            className="flex-1 min-w-fit flex items-center justify-between gap-5 rounded-full px-4 py-3 transition-opacity hover:opacity-85"
-            style={{ background: c.bg }}
-          >
-            <span className="flex items-center gap-2">
-              <span className="rounded-full flex-shrink-0" style={{ width: 6, height: 6, background: "rgba(255,255,255,0.9)" }} />
-              <span className="whitespace-nowrap" style={{ fontFamily: RB, fontWeight: 500, fontSize: 13, color: "rgba(255,255,255,0.95)" }}>{c.label}</span>
-            </span>
-            <span style={{ fontFamily: RB, fontWeight: 500, fontSize: 13, color: "rgba(255,255,255,0.95)" }}>&rarr;</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 // ─── How I Worked ────────────────────────────────────────────────────────
 const phases = [
@@ -389,7 +354,7 @@ function HowIWorked() {
           ))}
         </div>
 
-        <Image src="/images/abbvie/double-diamond-diagram.svg" alt="Double diamond diagram showing where AI let the process move between Discover, Define, Develop, and Deliver" width={1088} height={214} className="w-full h-auto" />
+        <DoubleDiamond />
       </div>
 
       {/* 3 change cards */}
@@ -487,7 +452,7 @@ export default function AbbVie() {
       <TitleMeta />
 
       <div className="max-w-[1168px] mx-auto px-6 md:px-0 mt-16 md:mt-20 mb-20 md:mb-[75px]">
-        <JumpBar />
+        <JumpToCaseStudy chips={jumpChips} fontFamily={RB} ink={INK} />
       </div>
 
       <div id="case-study-content" className="flex flex-col gap-20 md:gap-[75px] pb-24 md:pb-32">

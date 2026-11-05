@@ -5,6 +5,7 @@ import { CaseStudyNav } from "./CaseStudyNav";
 import Reveal from "@/components/Reveal";
 import { HeroCanvas } from "@/components/case-study/HeroCanvas";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
+import ToolBadges from "@/components/case-study/ToolBadges";
 
 // Space Grotesk stands in for the giant display wordmark in the hero.
 
@@ -284,7 +285,7 @@ function TitleMeta() {
         </div>
         <div style={{ flex: "1 1 220px" }}>
           <p className="mb-2.5" style={{ fontFamily: RB, fontWeight: 500, fontSize: 10, letterSpacing: "0.15em", color: BLUE }}>TOOLS</p>
-          <p style={{ fontFamily: RB, fontSize: 13, lineHeight: "1.58em", color: META }}>Claude Code<br />Mural<br />Dovetail</p>
+          <ToolBadges tools={["Claude Code", "Mural", "Dovetail"]} />
         </div>
         <div style={{ flex: "1 1 220px" }}>
           <p className="mb-2.5" style={{ fontFamily: RB, fontWeight: 500, fontSize: 10, letterSpacing: "0.15em", color: BLUE }}>OUTCOME</p>

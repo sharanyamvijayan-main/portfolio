@@ -781,3 +781,79 @@ button:focus-visible .rolling__letter {
   .tools-slider__set { flex-wrap: wrap; padding-right: 0; }
   .tools-slider__set[aria-hidden] { display: none; }
 }
+
+/* ── AbbVie double diamond arrows (projects/AbbVie/DoubleDiamond.tsx) ──
+   Dashes (4 on, 4 off) march along each curve toward its arrowhead; one
+   8-unit period per cycle, so it loops seamlessly. The heads nudge upward. */
+@keyframes ddFlow { to { stroke-dashoffset: -8; } }
+@keyframes ddHead {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -4px; }
+}
+.dd-flow { animation: ddFlow 0.6s linear infinite; }
+.dd-head { animation: ddHead 1.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .dd-flow, .dd-head { animation: none; }
+}
+
+/* ── AbbVie "Jump to a case study" (projects/AbbVie/JumpToCaseStudy.tsx) ──
+   Every 5s a soft band of light sweeps across each button, one after
+   another (--i), and its arrow nudges right as the light passes. */
+@keyframes jumpShine {
+  0%, 55% { translate: -120% 0; }
+  80%, 100% { translate: 120% 0; }
+}
+@keyframes jumpNudge {
+  0%, 62%, 100% { translate: 0 0; }
+  70% { translate: 5px 0; }
+  78% { translate: 0 0; }
+}
+.jump-chip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.38) 50%, transparent 70%);
+  translate: -120% 0;
+  animation: jumpShine 5s ease-in-out infinite;
+  animation-delay: calc(1.4s + var(--i, 0) * 0.25s);
+}
+.jump-arrow {
+  display: inline-block;
+  animation: jumpNudge 5s ease-in-out infinite;
+  animation-delay: calc(1.4s + var(--i, 0) * 0.25s);
+}
+.jump-chip:hover .jump-arrow { translate: 4px 0; animation: none; transition: translate 0.2s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .jump-chip::after, .jump-arrow { animation: none; }
+}
+
+/* ── Case-study header tool logos (components/case-study/ToolBadges.tsx) ── */
+.tool-badge { outline: none; }
+.tool-badge:hover > span:first-child,
+.tool-badge:focus-visible > span:first-child { scale: 1.1; }
+.tool-badge:focus-visible > span:first-child { box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #2708A0; }
+.tool-badge__tip {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  translate: -50% -4px;
+  white-space: nowrap;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #191919;
+  color: #FCEBDA;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, translate 0.2s ease;
+  z-index: 20;
+}
+.tool-badge:hover .tool-badge__tip,
+.tool-badge:focus-visible .tool-badge__tip {
+  opacity: 1;
+  translate: -50% 0;
+}
+.tool-badges--dark .tool-badge__tip { background: #FCEBDA; color: #191919; }

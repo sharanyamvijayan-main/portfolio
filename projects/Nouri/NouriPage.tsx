@@ -6,6 +6,7 @@ import { CaseStudyNav } from "./CaseStudyNav";
 import { ProblemSolutionsScrolly, type ProblemSolutionItem } from "./ProblemSolutionsScrolly";
 import Reveal from "@/components/Reveal";
 import ScrollMotion from "@/components/case-study/ScrollMotion";
+import ToolBadges from "@/components/case-study/ToolBadges";
 
 // Same editorial type system as the AbbVie case studies:
 // Newsreader (serif headings) · Roboto (body / eyebrows) · Fira Code (numerals).
@@ -193,6 +194,10 @@ function TitleMeta() {
             <p style={{ fontFamily: RB, fontSize: 13, lineHeight: "1.58em", color: TEXT }}>{m.value}</p>
           </div>
         ))}
+        <div style={{ flex: "1 1 190px" }}>
+          <p className="mb-2.5" style={{ fontFamily: RB, fontWeight: 500, fontSize: 10, letterSpacing: "0.15em", color: "rgba(255,255,255,0.45)" }}>TOOLS</p>
+          <ToolBadges tools={["Figma", "Adobe Illustrator", "Miro"]} tone="dark" />
+        </div>
       </div>
     </div>
   );

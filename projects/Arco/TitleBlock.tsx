@@ -1,11 +1,15 @@
 // Title block — ported from Figma node 272:1804 (Arco v2). Values are the
 // design's own; only the headline size and the meta row adapt below 1168px.
 
-function MetaCol({ label, children }: { label: string; children: React.ReactNode }) {
+import ToolBadges from "@/components/case-study/ToolBadges";
+
+// `bare` renders children as-is (not inside the value paragraph), for the
+// tool logos.
+function MetaCol({ label, children, bare }: { label: string; children: React.ReactNode; bare?: boolean }) {
   return (
-    <div className="[word-break:break-word] content-stretch flex flex-col gap-[9px] items-start overflow-clip relative shrink-0 w-[240px] max-w-full leading-[normal]">
+    <div className="[word-break:break-word] content-stretch flex flex-col gap-[9px] items-start relative shrink-0 w-[190px] max-w-full leading-[normal]">
       <p className="ar-roboto font-medium relative shrink-0 text-[#8a4b30] text-[10px] tracking-[1.5px] whitespace-nowrap">{label}</p>
-      <p className="ar-roboto font-normal relative shrink-0 text-[#636363] text-[13px] w-full whitespace-pre-wrap">{children}</p>
+      {bare ? children : <p className="ar-roboto font-normal relative shrink-0 text-[#636363] text-[13px] w-full whitespace-pre-wrap">{children}</p>}
     </div>
   );
 }
@@ -34,11 +38,14 @@ export function TitleBlock() {
 
       <div className="bg-[rgba(38,38,42,0.14)] h-px relative shrink-0 w-full" />
 
-      <div className="content-stretch flex flex-wrap gap-x-[69px] gap-y-[24px] items-start overflow-clip relative shrink-0">
+      <div className="content-stretch flex flex-wrap gap-x-[48px] gap-y-[24px] items-start relative shrink-0">
         <MetaCol label="PROJECT">Industrial Design</MetaCol>
         <MetaCol label="CREATOR">Sharanya Vijayan</MetaCol>
         <MetaCol label="MATERIALS">Beech Wood  ·  Oak Wood</MetaCol>
         <MetaCol label="DATE">November 2025</MetaCol>
+        <MetaCol label="TOOLS" bare>
+          <ToolBadges tools={["SolidWorks", "KeyShot", "Adobe Illustrator", "Adobe Photoshop"]} />
+        </MetaCol>
       </div>
     </div>
   );
